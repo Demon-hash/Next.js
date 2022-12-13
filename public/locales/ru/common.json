@@ -1,5 +1,8 @@
 {
   "application": {
     "title": "Приложение"
+  },
+  "auth": {
+    "login": "Войти"
   }
 }

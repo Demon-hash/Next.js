@@ -1,5 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type {NextApiRequest, NextApiResponse} from 'next'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 type Data = {
     categories: string[]
@@ -7,9 +6,9 @@ type Data = {
 
 export default function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data>
+    res: NextApiResponse<Data>,
 ) {
-    if(req.method !== "GET") return;
+    if (req.method !== "GET") return
     res.status(200).json({
         categories: [
             "All",
@@ -39,7 +38,7 @@ export default function handler(
             "Tools & Home Improvement",
             "Toys & Games",
             "Video Games",
-            "Women's Fashion"
-        ]
-    });
+            "Women's Fashion",
+        ],
+    })
 }

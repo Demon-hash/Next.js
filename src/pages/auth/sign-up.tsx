@@ -1,14 +1,9 @@
-import React from 'react';
+import React from "react"
 
-type Props = {
+type Props = {}
+
+const SignUpPage: React.FC<Props> = () => {
+    return <div></div>
 }
 
-const SignUpPage: React.FC<Props> = ({  }) => {
-    return (
-        <div>
-
-        </div>
-    );
-}
-
-export default SignUpPage;
+export default SignUpPage

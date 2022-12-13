@@ -1,48 +1,68 @@
-import React, {useState} from 'react';
-import {ShoppingCart} from "@mui/icons-material";
+import React, { forwardRef, useEffect, useState } from "react"
+import { ShoppingCart } from "@mui/icons-material"
 import {
     AppBar,
+    AppBarProps,
     Badge,
     Button,
-    Dialog, Divider,
+    Dialog,
+    Divider,
     IconButton,
     List,
     ListItem,
-    ListItemText, Slide,
+    ListItemText,
+    Slide,
     Toolbar,
-    Typography
-} from "@mui/material";
-import {TransitionProps} from "@mui/material/transitions";
-import CloseIcon from '@mui/icons-material/Close';
-import {styled} from "@mui/material/styles";
+    Typography,
+} from "@mui/material"
+import { TransitionProps } from "@mui/material/transitions"
+import CloseIcon from "@mui/icons-material/Close"
+import { styled } from "@mui/material/styles"
+import { useTranslation } from "next-i18next"
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
     props: TransitionProps & {
-        children: React.ReactElement;
+        children: React.ReactElement
     },
     ref: React.Ref<unknown>,
 ) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+    {/* prettier-ignore */}
+    return <Slide direction="up" ref={ref} {...props}/>
+})
 
 const ShoppingCartIcon = styled(ShoppingCart)(({ theme }) => ({
-    color: theme.palette?.appNavBar?.contrastText
-}));
+    color: theme.palette?.appNavBar?.contrastText,
+}))
+
+const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
+    background: theme.palette?.appNavBar?.main,
+    color: theme.palette?.appNavBar?.contrastText,
+}))
 
 type Props = {}
 
 const Cart: React.FC<Props> = () => {
+    const { t } = useTranslation("cart")
 
-    const [opened, setOpen] = useState<boolean>(false);
+    const [opened, setOpen] = useState<boolean>(false)
 
-    const onOpen = () => setOpen(true);
-    const onClose = () => setOpen(false);
+    const onOpen = () => setOpen(true)
+    const onClose = () => setOpen(false)
+
+    useEffect(() => {
+        if (!opened) return
+        fetch("/api/cart", {
+            method: "GET",
+        })
+            .then()
+            .catch()
+    }, [opened])
 
     return (
         <div>
             <IconButton onClick={onOpen}>
                 <Badge badgeContent={4} color="warning">
-                    <ShoppingCartIcon/>
+                    <ShoppingCartIcon />
                 </Badge>
             </IconButton>
 
@@ -52,30 +72,36 @@ const Cart: React.FC<Props> = () => {
                 onClose={onClose}
                 TransitionComponent={Transition}
             >
-                <AppBar sx={{position: 'relative'}}>
+                <MyAppBar sx={{ position: "relative" }}>
                     <Toolbar>
                         <IconButton
                             edge="start"
-                            color="inherit"
                             onClick={onClose}
-                            aria-label="close"
+                            color="inherit"
                         >
-                            <CloseIcon/>
+                            <CloseIcon />
                         </IconButton>
-                        <Typography sx={{ml: 2, flex: 1}} variant="h6" component="div">
-                            Sound
+                        <Typography
+                            sx={{ ml: 2, flex: 1 }}
+                            variant="h6"
+                            component="div"
+                        >
+                            {t("title")}
                         </Typography>
                         <Button autoFocus color="inherit" onClick={onClose}>
-                            save
+                            {t("checkout")}
                         </Button>
                     </Toolbar>
-                </AppBar>
+                </MyAppBar>
                 <List>
-                    <ListItem button>
-                        <ListItemText primary="Phone ringtone" secondary="Titania"/>
+                    <ListItem>
+                        <ListItemText
+                            primary="Phone ringtone"
+                            secondary="Titania"
+                        />
                     </ListItem>
-                    <Divider/>
-                    <ListItem button>
+                    <Divider />
+                    <ListItem>
                         <ListItemText
                             primary="Default notification ringtone"
                             secondary="Tethys"
@@ -84,7 +110,7 @@ const Cart: React.FC<Props> = () => {
                 </List>
             </Dialog>
         </div>
-    );
+    )
 }
 
-export default Cart;
+export default Cart

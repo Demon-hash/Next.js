@@ -1,25 +1,25 @@
-import React from "react";
-import {Header, Navbar, Footer} from "./index";
+import React from "react"
+import { Header, Navbar, Footer } from "./index"
 
-import styles from "../styles/components/page.module.css";
+import styles from "../styles/components/page.module.css"
+import CookieBar from "./Cookie-Bar"
 
 type Props = {
-    children?: React.ReactNode;
+    children?: React.ReactNode
 }
 
-const Page: React.FC<Props> = ({children}) => {
+const Page: React.FC<Props> = ({ children }) => {
     return (
         <>
-            <Header/>
+            <Header />
             <div className={styles.container}>
-                <Navbar/>
-                <main>
-                    {children}
-                </main>
+                <Navbar />
+                {children}
             </div>
-            <Footer/>
+            <CookieBar />
+            <Footer />
         </>
-    );
+    )
 }
 
-export default Page;
+export default Page

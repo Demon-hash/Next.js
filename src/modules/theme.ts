@@ -1,17 +1,14 @@
-import {Palette, PaletteOptions} from "@mui/material";
+import { Palette, PaletteOptions } from "@mui/material"
 
-declare module '@mui/material/styles' {
-    interface Theme {
-    }
-
+declare module "@mui/material/styles" {
     interface Palette {
-        appNavBar: Palette['primary'];
-        appSearchBar: Palette['primary'];
+        appNavBar: Palette["primary"]
+        appSearchBar: Palette["primary"]
     }
 
     interface PaletteOptions {
-        appNavBar: PaletteOptions['primary'];
-        appSearchBar: PaletteOptions['primary'];
+        appNavBar: PaletteOptions["primary"]
+        appSearchBar: PaletteOptions["primary"]
     }
 }
 

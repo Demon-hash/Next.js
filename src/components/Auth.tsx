@@ -1,36 +1,62 @@
-import React from "react";
-import {Dialog, Button, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import React from "react"
+import {
+    Dialog,
+    Button,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField,
+    FormControl,
+    Typography,
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 
 type Props = {
-    open: boolean;
-    onClose: () => void;
+    open: boolean
+    onClose: () => void
 }
 
-const Auth: React.FC<Props> = ({open, onClose}) => {
+const Container = styled(Dialog)(() => ({}))
+
+const Title = styled(DialogTitle)(({ theme }) => ({
+    padding: theme.spacing(50, "auto"),
+}))
+
+const Content = styled(DialogContent)(() => ({
+    textAlign: "left",
+}))
+
+const Auth: React.FC<Props> = ({ open, onClose }) => {
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Let Google help apps determine location. This means sending anonymous
-                    location data to Google, even when no apps are running.
-                </DialogContentText>
-            </DialogContent>
+        <Container open={open} onClose={onClose}>
+            <Title>Login</Title>
+            <Content>
+                <FormControl fullWidth>
+                    <TextField required label="Username" variant="filled" />
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField required label="Password" variant="filled" />
+                </FormControl>
+                <Typography variant="body1" component="div" color="">
+                    Forgot password?
+                </Typography>
+            </Content>
             <DialogActions>
-                <Button onClick={onClose}>Disagree</Button>
-                <Button onClick={onClose} autoFocus>
-                    Agree
+                <Button
+                    variant="contained"
+                    fullWidth
+                    size="large"
+                    onClick={onClose}
+                    autoFocus
+                >
+                    Login
                 </Button>
             </DialogActions>
-        </Dialog>
-    );
+            <Typography variant="body1" component="div" color="">
+                Not a member? Signup
+            </Typography>
+        </Container>
+    )
 }
 
-export default Auth;
+export default Auth
