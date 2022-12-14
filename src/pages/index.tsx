@@ -1,86 +1,120 @@
 import React from "react"
-import { GetServerSideProps } from "next"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import {GetServerSideProps} from "next"
+import {serverSideTranslations} from "next-i18next/serverSideTranslations"
 import AppConfig from "../../app.config"
+import {
+    Divider,
+    Grid,
+    List,
+    ListItemButton,
+    ListItemText, Pagination,
+    Paper,
+    Stack,
+    Typography
+} from "@mui/material"
+import {Page} from "../components"
+import {styled} from "@mui/material/styles"
+import Carousel from "react-material-ui-carousel";
 
-import Carousel from "react-material-ui-carousel"
-import Image from "next/image"
-import { Paper } from "@mui/material"
+const Container = styled(Paper)(({theme}) => ({
+    position: "relative",
+    width: "100%",
+    padding: theme.spacing(1, 0),
+    margin: theme.spacing(1, "auto"),
+    borderBottom: `1px solid ${theme.palette.primary.light}`
+}))
 
-import { Page } from "../components"
-import { styled } from "@mui/material/styles"
+const Navigation = styled(List)(({theme}) => ({
+    width: "90%",
+    margin: "auto"
+}));
 
-import Front from "../../public/assets/img/0.jpg"
-import Front2 from "../../public/assets/img/1.jpg"
-import Front3 from "../../public/assets/img/2.jpg"
-import Front4 from "../../public/assets/img/4.jpg"
+const Table = styled(List)(({theme}) => ({
+    border: `1px solid ${theme.palette.primary.light}`
+}));
 
-const Container = styled(Paper)(({ theme }) => ({
+const GridContainer = styled(Grid)(({theme}) => ({
     position: "relative",
     width: "90%",
-    margin: theme.spacing(0, "auto"),
-}))
+    margin: theme.spacing(5, 'auto'),
+    maxHeight: 400,
+}));
 
-/*const Item = styled(Paper)(({ theme }) => ({
-    position: "relative",
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-}))*/
+import img from "../../public/assets/img/1.jpg"
 
-const CarouselItem = styled(Paper)(() => ({
-    overflow: "hidden",
-    width: "100%",
-    maxHeight: 500,
-}))
+import ProductList from "../components/Products/Product-List";
+import {IProduct} from "../types/product";
 
 type Props = {}
 
 const IndexPage: React.FC<Props> = () => {
-    const items = [
-        { img: Front },
-        { img: Front2 },
-        { img: Front3 },
-        { img: Front4 },
-    ]
+
+    const navItems: string[] = [
+        "Home", "About", "Supermarket",
+        "Partnership", "Baby & Toys", "Fitness Sport",
+        "Clothing", "Furnitures"
+    ];
+
+    const tableItems: string[] = [
+        "Best clothes", "Automobiles",
+        "Home interior", "Electronics",
+        "Technologies", "Digital goods"
+    ];
+
+    const products: IProduct[] = new Array(8).fill(0).map((item, index) => ({
+        id: index,
+        name: `Product #${index}`,
+        price: "179.99",
+        img
+    }));
 
     return (
         <Page>
-            <Container>
-                <Carousel
-                    sx={{
-                        position: "relative"
-                    }}
-                    animation="slide"
-                    duration={1000}
-                    swipe
-                >
-                    {
-                        items.map((item, i) => <>
-                            <CarouselItem key={i}>
-                                <Image
-                                    src={item.img}
-                                    quality={100}
-                                    alt="*"
-                                />
-                            </CarouselItem>
-                        </>)
-                    }
-                </Carousel>
+            <Container elevation={0}>
+                <Navigation component={Stack} direction="row" alignItems="center" spacing={3}>
+                    {navItems.map(item => <Typography variant="body1" component="div" key={item}>{item}</Typography>)}
+                    <Typography variant="body1" component="div">More</Typography>
+                </Navigation>
             </Container>
+            <GridContainer container gap={2}>
+                <Grid item xs={3}>
+                    <Table component="nav">
+                        {tableItems.map(item => <>
+                            <ListItemButton>
+                                <ListItemText primary={item}/>
+                            </ListItemButton>
+                            <Divider/>
+                        </>)}
+                        <ListItemButton>
+                            <ListItemText primary="More items"/>
+                        </ListItemButton>
+                    </Table>
+                </Grid>
+                <Grid item xs={8}>
+                    {/*<Carousel>*/}
+                    {/*    {items.map((item, i) =>*/}
+                    {/*        <Image src={img} alt="*" fill sizes="400" loading="lazy"/>*/}
+                    {/*    )}*/}
+                    {/*</Carousel>*/}
+                </Grid>
+            </GridContainer>
+            <GridContainer container gap={1}>
+                <Typography variant="h5" component="div">Popular products</Typography>
+            </GridContainer>
+            <ProductList products={products} gap={3}/>
+            <Pagination count={100} boundaryCount={3} size="large" showFirstButton showLastButton/>
         </Page>
     )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({
-    locale = AppConfig.defaultAppLanguage,
-}) => {
+                                                                 locale = AppConfig.defaultAppLanguage,
+                                                             }) => {
     return {
         props: {
             ...(await serverSideTranslations(locale, [
-                "common",
+                "navbar",
+                "auth",
                 "cart",
                 "header",
                 "footer",

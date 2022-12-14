@@ -20,7 +20,7 @@ const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
 type Props = {}
 
 const Navbar: React.FC<Props> = () => {
-    const { t } = useTranslation(["common", "navbar"])
+    const { t } = useTranslation(["navbar"])
 
     const [authOpened, setAuthOpened] = useState<boolean>(false)
 
@@ -36,7 +36,7 @@ const Navbar: React.FC<Props> = () => {
                         component="div"
                         sx={{ flexGrow: 1 }}
                     >
-                        {t("application.title")}
+                        {t("title")}
                     </Typography>
                     <SearchBar />
                     <LanguageSwitcher />

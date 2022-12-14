@@ -1,7 +1,5 @@
 import React from "react"
 import { Header, Navbar, Footer } from "./index"
-
-import styles from "../styles/components/page.module.css"
 import CookieBar from "./Cookie-Bar"
 
 type Props = {
@@ -12,10 +10,10 @@ const Page: React.FC<Props> = ({ children }) => {
     return (
         <>
             <Header />
-            <div className={styles.container}>
+            <main>
                 <Navbar />
                 {children}
-            </div>
+            </main>
             <CookieBar />
             <Footer />
         </>

@@ -12,6 +12,7 @@ import {
 } from "@mui/material"
 import { Search } from "@mui/icons-material"
 import { styled } from "@mui/material/styles"
+import {useRouter} from "next/router";
 
 const Container = styled(TextField)<TextFieldProps>(({ theme }) => ({
     width: "50%",
@@ -38,13 +39,14 @@ const SearchIcon = styled(Search)(({ theme }) => ({
 }))
 
 const SearchBar: React.FC = () => {
+    const { locale } = useRouter();
     const [categories, setCategories] = useState<string[] | undefined>(
         undefined,
     )
     const [category, setCategory] = useState<string | null>(null)
 
-    useEffect(() => {
-        fetch("/api/categories", {
+    const loadCategories = () => {
+        fetch(`/api/categories?l=${locale}`, {
             method: "GET",
         })
             .then(res => res.json())
@@ -58,7 +60,10 @@ const SearchBar: React.FC = () => {
                 )
             })
             .catch(console.error)
-    }, [])
+    }
+
+    useEffect(() => loadCategories(), []);
+    useEffect(() => loadCategories(), [locale]);
 
     useEffect(() => {
         if (categories == null) return

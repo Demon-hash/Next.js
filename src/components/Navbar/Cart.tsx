@@ -19,6 +19,7 @@ import { TransitionProps } from "@mui/material/transitions"
 import CloseIcon from "@mui/icons-material/Close"
 import { styled } from "@mui/material/styles"
 import { useTranslation } from "next-i18next"
+import {useRouter} from "next/router";
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -43,6 +44,7 @@ type Props = {}
 
 const Cart: React.FC<Props> = () => {
     const { t } = useTranslation("cart")
+    const { locale } = useRouter();
 
     const [opened, setOpen] = useState<boolean>(false)
 
@@ -51,7 +53,7 @@ const Cart: React.FC<Props> = () => {
 
     useEffect(() => {
         if (!opened) return
-        fetch("/api/cart", {
+        fetch(`/api/cart/?l=${locale}`, {
             method: "GET",
         })
             .then()
