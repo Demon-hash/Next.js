@@ -4,19 +4,22 @@ const AppTheme = createTheme({
     palette: {
         primary: {
             main: "#0070ff",
-            light: "#dadada"
+            light: "#dadada",
+        },
+        warning: {
+            main: "#ff3333",
         },
         appNavBar: {
-            main: "#0F0F0F",
+            main: "#ffffff",
             light: "#fff",
-            dark: "#1c1c1c",
-            contrastText: "#888888",
+            dark: "#dadada",
+            contrastText: "#000000",
         },
         appSearchBar: {
             main: "#888888",
-            dark: "#fff",
+            dark: "#7a7a7a",
             light: "#fff",
-            contrastText: "#888888",
+            contrastText: "#000000",
         },
     },
 })

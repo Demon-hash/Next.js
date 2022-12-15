@@ -7,28 +7,31 @@ import {
     DialogTitle,
     TextField,
     FormControl,
-    Typography, DialogContentText, IconButton, Box, TextFieldProps,
+    Typography,
+    DialogContentText,
+    IconButton,
+    Box,
+    TextFieldProps,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
-import {useTranslation} from "next-i18next";
+import FacebookIcon from "@mui/icons-material/Facebook"
+import TwitterIcon from "@mui/icons-material/Twitter"
+import GoogleIcon from "@mui/icons-material/Google"
+import { useTranslation } from "next-i18next"
 
 type Props = {
     open: boolean
     onClose: () => void
 }
 
-const Container = styled(Dialog)(() => ({theme}) => ({
-}));
+const Container = styled(Dialog)(() => ({ theme }) => ({}))
 
 const Title = styled(DialogTitle)(({ theme }) => ({
     ...theme.typography.h3,
     textAlign: "center",
     background: theme.palette?.appNavBar?.main,
-    color: theme.palette?.appNavBar?.light
+    color: theme.palette?.appNavBar?.light,
 }))
 
 const Content = styled(DialogContent)(({ theme }) => ({
@@ -45,7 +48,7 @@ const Text = styled(DialogContentText)(({ theme }) => ({
     color: theme.palette?.appNavBar?.contrastText,
     ...theme.typography.body1,
     textAlign: "center",
-    margin: theme.spacing(0, 0, 5,0),
+    margin: theme.spacing(0, 0, 5, 0),
 }))
 
 const ClickableIcon = styled(IconButton)(({ theme }) => ({
@@ -58,23 +61,20 @@ const TextInput = styled(TextField)<TextFieldProps>(({ theme }) => ({
         "& > fieldset": {
             outline: 0,
         },
-        margin: theme.spacing(0, 0, 3,0),
+        margin: theme.spacing(0, 0, 3, 0),
         color: theme.palette?.appSearchBar?.light,
         outline: 0,
     },
 }))
 
 const Auth: React.FC<Props> = ({ open, onClose }) => {
-
-    const {t} = useTranslation("auth");
+    const { t } = useTranslation("auth")
 
     return (
         <Container open={open} onClose={onClose}>
             <Title>{t("title")}</Title>
             <Content>
-                <Text>
-                    {t("desc")}
-                </Text>
+                <Text>{t("desc")}</Text>
                 <FormControl fullWidth>
                     <TextInput
                         required
@@ -108,18 +108,16 @@ const Auth: React.FC<Props> = ({ open, onClose }) => {
                 </Button>
             </Actions>
             <Actions>
-                <Button color="info">
-                    {t("sign-up")}
-                </Button>
+                <Button color="info">{t("sign-up")}</Button>
                 <Box sx={{ flexGrow: 1 }} />
                 <ClickableIcon>
-                    <FacebookIcon/>
+                    <FacebookIcon />
                 </ClickableIcon>
                 <ClickableIcon>
-                    <TwitterIcon/>
+                    <TwitterIcon />
                 </ClickableIcon>
                 <ClickableIcon>
-                    <GoogleIcon/>
+                    <GoogleIcon />
                 </ClickableIcon>
             </Actions>
         </Container>

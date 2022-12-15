@@ -13,8 +13,8 @@ export default function handler(
             break
         case "GET":
             res.status(200).json({
-                categories: []
-            });
+                categories: [],
+            })
             break
         case "PATCH":
             break

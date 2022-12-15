@@ -1,6 +1,6 @@
 import React from "react"
 import { styled } from "@mui/material/styles"
-import {Paper} from "@mui/material"
+import { Paper } from "@mui/material"
 
 const Item = styled(Paper)(({ theme }) => ({
     position: "fixed",

@@ -1,3 +1,34 @@
 {
-  "title": "Русский"
+  "brands": {
+    "header": "Брэнды"
+  },
+  "company": {
+    "header": "Компания",
+    "about-us": "О нас",
+    "career": "Карьера",
+    "find-a-store": "Найти магазин",
+    "rules-and-terms": "Правила и Условия",
+    "sitemap": "Карта сайта"
+  },
+  "help": {
+    "header": "Помощь",
+    "contact-us": "Связатся с нами",
+    "money-refund": "Возврат средств",
+    "order-status": "Статус заказа",
+    "shipping-info": "Информация о доставке",
+    "open-dispute": "Открыть спор"
+  },
+  "account": {
+    "header": "Аккаунт",
+    "user-login": "Войти в аккаунт",
+    "user-register": "Зарегистрировать аккаунт",
+    "account-settings": "Настройки аккаунта",
+    "my-orders": "Мои заказы"
+  },
+  "social": {
+    "header": "Социальное",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram"
+  }
 }

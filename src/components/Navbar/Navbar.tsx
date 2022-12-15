@@ -11,15 +11,20 @@ import { SearchBar, LanguageSwitcher, Cart } from "../index"
 import Auth from "../Auth"
 import { styled } from "@mui/material/styles"
 import { useTranslation } from "next-i18next"
+import AppConfig from "../../../app.config"
 
 const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: theme.palette.appNavBar.main,
     color: theme.palette.appNavBar.contrastText,
+    borderBottom: `1px solid ${theme.palette.primary.light}`,
+    padding: 0,
+    margin: 0,
 }))
 
 type Props = {}
 
 const Navbar: React.FC<Props> = () => {
+    const Company = AppConfig.appName
     const { t } = useTranslation(["navbar"])
 
     const [authOpened, setAuthOpened] = useState<boolean>(false)
@@ -29,20 +34,20 @@ const Navbar: React.FC<Props> = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <MyAppBar position="relative">
+            <MyAppBar position="relative" elevation={0}>
                 <Toolbar>
                     <Typography
                         variant="h6"
                         component="div"
                         sx={{ flexGrow: 1 }}
                     >
-                        {t("title")}
+                        {Company}
                     </Typography>
                     <SearchBar />
                     <LanguageSwitcher />
                     <Box sx={{ flexGrow: 1 }} />
                     <Cart />
-                    <Button color="inherit" onClick={openAuthDialog}>
+                    <Button variant="outlined" onClick={openAuthDialog}>
                         {t("login")}
                     </Button>
                     <Auth open={authOpened} onClose={closeAuthDialog} />

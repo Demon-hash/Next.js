@@ -8,10 +8,10 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>,
 ) {
-    const {query, method} = req;
-    if (method !== "GET") return;
+    const { query, method } = req
+    if (method !== "GET") return
 
-    switch (query?.l) {
+    switch (query?.locale) {
         case "ru":
             res.status(200).json({
                 categories: [
@@ -45,7 +45,7 @@ export default function handler(
                     "Женская мода",
                 ],
             })
-            break;
+            break
         case "de":
             res.status(200).json({
                 categories: [
@@ -78,8 +78,8 @@ export default function handler(
                     "Videospiele",
                     "Frauenmode",
                 ],
-            });
-            break;
+            })
+            break
         case "en":
             res.status(200).json({
                 categories: [
@@ -113,11 +113,11 @@ export default function handler(
                     "Women's Fashion",
                 ],
             })
-            break;
+            break
         default:
             res.status(200).json({
-               categories: []
-            });
-            break;
+                categories: [],
+            })
+            break
     }
 }

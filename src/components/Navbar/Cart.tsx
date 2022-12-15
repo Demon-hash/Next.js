@@ -19,7 +19,7 @@ import { TransitionProps } from "@mui/material/transitions"
 import CloseIcon from "@mui/icons-material/Close"
 import { styled } from "@mui/material/styles"
 import { useTranslation } from "next-i18next"
-import {useRouter} from "next/router";
+import { useRouter } from "next/router"
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -28,11 +28,12 @@ const Transition = forwardRef(function Transition(
     ref: React.Ref<unknown>,
 ) {
     {/* prettier-ignore */}
-    return <Slide direction="up" ref={ref} {...props}/>
+    return <Slide direction="up" ref={ref} {...props} />
 })
 
-const ShoppingCartIcon = styled(ShoppingCart)(({ theme }) => ({
-    color: theme.palette?.appNavBar?.contrastText,
+const ShoppingCartIcon = styled(IconButton)(({ theme }) => ({
+    color: theme.palette?.appSearchBar?.dark,
+    margin: theme.spacing(0, 2),
 }))
 
 const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
@@ -44,7 +45,7 @@ type Props = {}
 
 const Cart: React.FC<Props> = () => {
     const { t } = useTranslation("cart")
-    const { locale } = useRouter();
+    const { locale } = useRouter()
 
     const [opened, setOpen] = useState<boolean>(false)
 
@@ -62,11 +63,11 @@ const Cart: React.FC<Props> = () => {
 
     return (
         <div>
-            <IconButton onClick={onOpen}>
+            <ShoppingCartIcon onClick={onOpen}>
                 <Badge badgeContent={4} color="warning">
-                    <ShoppingCartIcon />
+                    <ShoppingCart />
                 </Badge>
-            </IconButton>
+            </ShoppingCartIcon>
 
             <Dialog
                 fullScreen

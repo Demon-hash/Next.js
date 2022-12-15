@@ -1,3 +1,34 @@
 {
-  "title": "English"
+  "brands": {
+    "header": "Brands"
+  },
+  "company": {
+    "header": "Company",
+    "about-us": "About us",
+    "career": "Career",
+    "find-a-store": "Find a store",
+    "rules-and-terms": "Rules and Terms",
+    "sitemap": "Sitemap"
+  },
+  "help": {
+    "header": "Help",
+    "contact-us": "Contact us",
+    "money-refund": "Money refund",
+    "order-status": "Order status",
+    "shipping-info": "Shipping Info",
+    "open-dispute": "Open dispute"
+  },
+  "account": {
+    "header": "Account",
+    "user-login": "User login",
+    "user-register": "User register",
+    "account-settings": "Account settings",
+    "my-orders": "My orders"
+  },
+  "social": {
+    "header": "Social",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram"
+  }
 }

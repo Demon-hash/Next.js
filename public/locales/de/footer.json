@@ -1,3 +1,34 @@
 {
-  "title": "Deutsch"
+  "brands": {
+    "header": "Marken"
+  },
+  "company": {
+    "header": "Gesellschaft",
+    "about-us": "Über uns",
+    "career": "Karriere",
+    "find-a-store": "Finde ein Geschäft",
+    "rules-and-terms": "Regeln und Bedingungen",
+    "sitemap": "Seitenverzeichnis"
+  },
+  "help": {
+    "header": "Hilfe",
+    "contact-us": "Kontaktiere uns",
+    "money-refund": "Geldrückerstattung",
+    "order-status": "Bestellstatus",
+    "shipping-info": "Versandinformation",
+    "open-dispute": "Streitfall öffnen"
+  },
+  "account": {
+    "header": "Konto",
+    "user-login": "Benutzer-Anmeldung",
+    "user-register": "Benutzer registrieren",
+    "account-settings": "Account Einstellungen",
+    "my-orders": "Meine Bestellungen"
+  },
+  "social": {
+    "header": "Sozial",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram"
+  }
 }

@@ -1,5 +1,7 @@
 const AppConfig = {
-    defaultAppLanguage: 'en'
+    appName: "Shopify",
+    defaultAppLanguage: 'en',
+    currency: "$",
 }
 
 module.exports = AppConfig;
