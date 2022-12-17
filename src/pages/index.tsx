@@ -2,19 +2,20 @@ import React from "react"
 import { GetServerSideProps } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import AppConfig from "../../app.config"
-import {
-    Box,
-    Button,
-    Grid,
-    List,
-    Paper,
-    Stack,
-    Typography,
-} from "@mui/material"
+import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
 import { Carousel, Page, ProductList } from "../components"
 import { styled } from "@mui/material/styles"
+import banner from "../../public/assets/img/3.jpg"
+import banner2 from "../../public/assets/img/4.jpg"
+import { IProduct } from "../types/product"
+import { useTranslation } from "next-i18next"
+import { useGetPopularClothes } from "../routes"
+import { useRouter } from "next/router"
 
 const Container = styled(Paper)(({ theme }) => ({
+    [theme.breakpoints.down("md")]: {
+        display: "none",
+    },
     position: "relative",
     width: "100%",
     padding: theme.spacing(1, 0),
@@ -22,9 +23,12 @@ const Container = styled(Paper)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.primary.light}`,
 }))
 
-const Navigation = styled(List)(() => ({
+const Navigation = styled(Stack)(({ theme }) => ({
     width: "90%",
     margin: "auto",
+    [theme.breakpoints.up("md")]: {
+        justifyContent: "flex-start",
+    },
 }))
 
 const GridContainer = styled(Grid)(({ theme }) => ({
@@ -34,37 +38,25 @@ const GridContainer = styled(Grid)(({ theme }) => ({
     maxHeight: 400,
 }))
 
-import img from "../../public/assets/img/1.jpg"
-import banner from "../../public/assets/img/3.jpg"
-import banner2 from "../../public/assets/img/4.jpg"
-
-import { IProduct } from "../types/product"
-import { useTranslation } from "next-i18next"
-
 type Props = {}
 
 const IndexPage: React.FC<Props> = () => {
     const { t } = useTranslation("common")
+    const { locale } = useRouter()
+
     const categories: string[] = [t("woman"), t("man"), t("kid")]
 
-    const products: IProduct[] = new Array(8).fill(0).map((item, index) => ({
-        id: index,
-        name: `Product #${index}`,
-        price: "179.99",
-        img,
-    }))
+    const { data: products } = useGetPopularClothes<IProduct[]>({
+        locale: locale ?? "",
+        limit: 6,
+    })
 
     const items = [{ img: banner }, { img: banner2 }, { img: banner }]
 
     return (
         <Page>
             <Container elevation={0}>
-                <Navigation
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                    spacing={3}
-                >
+                <Navigation direction="row" alignItems="center" spacing={3}>
                     {categories.map(item => (
                         <Typography variant="body1" component="div" key={item}>
                             {item}
@@ -84,7 +76,7 @@ const IndexPage: React.FC<Props> = () => {
                 <Box sx={{ flexGrow: 1 }} />
                 <Button variant="outlined">{t("see-all-clothes")}</Button>
             </GridContainer>
-            <ProductList products={products} gap={1} />
+            <ProductList products={products ?? []} gap={1} />
         </Page>
     )
 }

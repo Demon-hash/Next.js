@@ -1,25 +1,31 @@
-import {createRoute} from "./utils/router";
-import {ICategories} from "./types/categories";
+import { createRoute } from "./utils/router"
 
-export const API_ROUTE = "/api";
+export const API_ROUTE = "/api"
 
 export const useSearchCategories = createRoute({
     method: "GET",
     segments: ["categories"],
-    query: {locale: ""},
-    hash: ""
-});
+    query: { locale: "" },
+    hash: "",
+})
 
-export const GET_POPULAR_CLOTHES = createRoute({
-    method: "POST",
+export const useGetPopularClothes = createRoute({
+    method: "GET",
     segments: ["popular", "clothes"],
-    body: {limit: 6},
-    hash: ""
-});
+    query: { locale: "", limit: 0 },
+    hash: "",
+})
 
-export const GET_CART_ORDERS = createRoute({
+export const useGetPopularBrands = createRoute({
+    method: "GET",
+    segments: ["popular", "brands"],
+    query: { locale: "" },
+    hash: "",
+})
+
+export const useGetCartOrders = createRoute({
     method: "PATCH",
     segments: ["cart"],
     body: {},
-    hash: ""
-});
+    hash: "",
+})

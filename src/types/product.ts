@@ -1,8 +1,12 @@
 import { StaticImageData } from "next/dist/client/image"
 
 export interface IProduct {
-    id: number
+    id: string
     name: string
-    price: string
+    price: number
     img: string | StaticImageData
+    brand?: string
+    colors?: string[]
+    rating?: number
+    discount?: number
 }

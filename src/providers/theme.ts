@@ -5,6 +5,7 @@ const AppTheme = createTheme({
         primary: {
             main: "#0070ff",
             light: "#dadada",
+            dark: "#3d3d3d",
         },
         warning: {
             main: "#ff3333",

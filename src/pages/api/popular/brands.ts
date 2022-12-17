@@ -1,16 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-
-type Data = {
-    brands: string[]
-}
+import { IBrands } from "../../../types/brands"
 
 export default function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data>,
+    res: NextApiResponse<IBrands>,
 ) {
     switch (req.method) {
         case "GET":
-            switch (req.query?.country) {
+            switch (req.query?.locale) {
                 case "en":
                     res.status(200).json({
                         brands: ["Adidas", "Puma", "Reebok", "Nike"],

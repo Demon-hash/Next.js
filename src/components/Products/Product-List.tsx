@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ProductList: React.FC<Props> = ({
-    products,
+    products = [],
     gap,
     productsPerPage = 8,
     pagination = false,
@@ -49,6 +49,10 @@ const ProductList: React.FC<Props> = ({
                             name={product.name}
                             img={product.img}
                             price={product.price}
+                            brand={product.brand}
+                            colors={product.colors}
+                            rating={product.rating}
+                            discount={product.discount}
                             gap={gap}
                         />
                     ))}

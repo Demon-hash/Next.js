@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
     FormControl,
     IconButton,
@@ -10,13 +10,19 @@ import {
     TextField,
     TextFieldProps,
 } from "@mui/material"
-import {Search} from "@mui/icons-material"
-import {styled} from "@mui/material/styles"
-import {useRouter} from "next/router"
-import {useSearchCategories} from "../../routes";
+import { Search } from "@mui/icons-material"
+import { styled } from "@mui/material/styles"
+import { useRouter } from "next/router"
+import { useSearchCategories } from "../../routes"
+import { ICategories } from "../../types/categories"
 
-const Container = styled(TextField)<TextFieldProps>(({theme}) => ({
-    width: "50%",
+const Container = styled(TextField)<TextFieldProps>(({ theme }) => ({
+    [theme.breakpoints.down("md")]: {
+        display: "none",
+    },
+    [theme.breakpoints.up("md")]: {
+        width: "50%",
+    },
     ".MuiOutlinedInput-root": {
         "& > fieldset": {
             border: 0,
@@ -29,35 +35,35 @@ const Container = styled(TextField)<TextFieldProps>(({theme}) => ({
     },
 }))
 
-const SelectCategory = styled(Select)<SelectProps>(({theme}) => ({
+const SelectCategory = styled(Select)<SelectProps>(({ theme }) => ({
     ".MuiSelect-standard, .MuiSelect-icon": {
         color: theme.palette?.appSearchBar?.dark,
         background: 0,
     },
 }))
 
-const SearchIcon = styled(Search)(({theme}) => ({
+const SearchIcon = styled(Search)(({ theme }) => ({
     color: theme.palette?.appSearchBar?.dark,
 }))
 
 const SearchBar: React.FC = () => {
-
-    const {locale} = useRouter()
-    const [categories, setCategories] = useState<string[] | undefined>(undefined)
+    const { locale } = useRouter()
+    const [categories, setCategories] = useState<string[] | undefined>(
+        undefined,
+    )
     const [category, setCategory] = useState<string | null>(null)
-    const {data} = useSearchCategories({
-        locale: locale ?? ""
-    });
+
+    const { data } = useSearchCategories<ICategories>({ locale: locale ?? "" })
 
     useMemo(() => {
-        if (!data || typeof data !== "object" || !data?.categories) return;
-        setCategories(data.categories?.sort((a, b) => a?.localeCompare(b)));
-    }, [data]);
+        if (!data || typeof data !== "object" || !data?.categories) return
+        setCategories(data.categories?.sort((a, b) => a?.localeCompare(b)))
+    }, [data])
 
     useEffect(() => {
         if (categories == null) return
         setCategory(categories[0])
-    }, [categories]);
+    }, [categories])
 
     const search = () => {
         return
@@ -71,7 +77,6 @@ const SearchBar: React.FC = () => {
         <Container
             type="text"
             variant="outlined"
-            color="info"
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
@@ -97,7 +102,7 @@ const SearchBar: React.FC = () => {
                             onMouseDown={search}
                             edge="end"
                         >
-                            <SearchIcon/>
+                            <SearchIcon />
                         </IconButton>
                     </InputAdornment>
                 ),
