@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import Link from 'next/link'
 import { useTranslation } from "next-i18next"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
@@ -20,22 +21,12 @@ import { styled } from "@mui/material/styles"
 import FacebookIcon from "@mui/icons-material/Facebook"
 import TwitterIcon from "@mui/icons-material/Twitter"
 import InstagramIcon from "@mui/icons-material/Instagram"
-import AppConfig from "../../../app.config"
-import { useWindowSize } from "@react-hook/window-size"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import { useWindowSize } from "@react-hook/window-size"
+import AppConfig from "../../../app.config"
 import { useGetPopularBrands } from "../../routes"
 import { IBrands } from "../../types/brands"
-
-const Container = styled(Paper)(({ theme }) => ({
-    width: "100%",
-    margin: theme.spacing(5, "auto"),
-    borderTop: `1px solid ${theme.palette.primary.light}`,
-}))
-
-const MyTable = styled(Table)(({ theme }) => ({
-    margin: "auto",
-    width: "90%",
-}))
+import {StaticRoutes} from "../../static-routes";
 
 const Cell = styled(TableCell)(() => ({
     border: 0,
@@ -78,6 +69,10 @@ const Footer: React.FC = () => {
         setBrands(data.brands)
     }, [data])
 
+    const createBrandLinks = (data: typeof brands): JSX.Element[] => {
+        return data.map((value) => <Link href={`${StaticRoutes.Brands.template}/${value.toLowerCase()}`}>{value}</Link>);
+    }
+
     const createRowData = (
         brand: string,
         company: string,
@@ -91,39 +86,39 @@ const Footer: React.FC = () => {
             .length
 
     const createAndFillTable = (): Rows => [
-        [...(brands ?? [])],
+        [...createBrandLinks(brands ?? [])],
         [
-            t("company.about-us"),
-            t("company.career"),
-            t("company.find-a-store"),
-            t("company.rules-and-terms"),
-            t("company.sitemap"),
+            <Link href={StaticRoutes.Company.about}>{t("company.about-us")}</Link>,
+            <Link href={StaticRoutes.Company.career}>{t("company.career")}</Link>,
+            <Link href={StaticRoutes.Company.store}>{t("company.find-a-store")}</Link>,
+            <Link href={StaticRoutes.Company.rules}>{t("company.rules-and-terms")}</Link>,
+            <Link href={StaticRoutes.Company.sitemap}>{t("company.sitemap")}</Link>,
         ],
         [
-            t("help.contact-us"),
-            t("help.money-refund"),
-            t("help.order-status"),
-            t("help.shipping-info"),
-            t("help.open-dispute"),
+            <Link href={StaticRoutes.Help.contact}>{t("help.contact-us")}</Link>,
+            <Link href={StaticRoutes.Help.refund}>{t("help.money-refund")}</Link>,
+            <Link href={StaticRoutes.Help.order}>{t("help.order-status")}</Link>,
+            <Link href={StaticRoutes.Help.shipping}>{t("help.shipping-info")}</Link>,
+            <Link href={StaticRoutes.Help.dispute}>{t("help.open-dispute")}</Link>,
         ],
         [
-            t("account.user-login"),
-            t("account.user-register"),
-            t("account.account-settings"),
-            t("account.my-orders"),
+            <Link href={StaticRoutes.Account.login}>{t("account.user-login")}</Link>,
+            <Link href={StaticRoutes.Account.sign}>{t("account.user-register")}</Link>,
+            <Link href={StaticRoutes.Account.settings}>{t("account.account-settings")}</Link>,
+            <Link href={StaticRoutes.Account.orders}>{t("account.my-orders")}</Link>,
         ],
         [
             <Stack direction="row" alignItems="center" gap={1}>
                 <FacebookIcon />
-                {t("social.facebook")}
+                <Link href={StaticRoutes.Social.facebook}>{t("social.facebook")}</Link>
             </Stack>,
             <Stack direction="row" alignItems="center" gap={1}>
                 <TwitterIcon />
-                {t("social.twitter")}
+                <Link href={StaticRoutes.Social.twitter}>{t("social.twitter")}</Link>
             </Stack>,
             <Stack direction="row" alignItems="center" gap={1}>
                 <InstagramIcon />
-                {t("social.instagram")}
+                <Link href={StaticRoutes.Social.instagram}>{t("social.instagram")}</Link>
             </Stack>,
         ],
     ]
@@ -147,7 +142,7 @@ const Footer: React.FC = () => {
             )
 
         const mob = headers.reduce((previous, current) => {
-            const short = current.toLowerCase() as keyof Data
+            const short = current.toLowerCase();
             const data = desk.reduce(
                 (acc, item) => ({
                     ...acc,
@@ -159,7 +154,7 @@ const Footer: React.FC = () => {
             return {
                 ...previous,
                 [short]: data[short],
-                brands,
+                brands: createBrandLinks(brands),
             }
         }, {})
 
@@ -168,10 +163,20 @@ const Footer: React.FC = () => {
 
     return (
         <footer>
-            <Container elevation={0}>
+            <Paper
+                elevation={0}
+                sx={{
+                    width: "100%",
+                    margin: theme.spacing(5, "auto"),
+                    borderTop: `1px solid ${theme.palette.primary.light}`,
+                }}
+            >
                 {width >= theme.breakpoints.values.md ? (
                     <TableContainer component={Paper}>
-                        <MyTable>
+                        <Table sx={{
+                            width: "90%",
+                            margin: "auto"
+                        }}>
                             <caption>
                                 {Year} {Company}
                             </caption>
@@ -195,16 +200,14 @@ const Footer: React.FC = () => {
                                     </TableRow>
                                 ))}
                             </TableBody>
-                        </MyTable>
+                        </Table>
                     </TableContainer>
                 ) : (
                     <>
                         {mobile &&
                             headers.map(h => (
                                 <Accordion key={h}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                    >
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                         <Typography>{h}</Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
@@ -214,23 +217,14 @@ const Footer: React.FC = () => {
                                             justifyContent="center"
                                             spacing={2}
                                         >
-                                            {mobile[h.toLowerCase()]?.map(
-                                                row => (
-                                                    <Typography
-                                                        variant="body1"
-                                                        key={row}
-                                                    >
-                                                        {row}
-                                                    </Typography>
-                                                ),
-                                            )}
+                                            {mobile[h.toLowerCase()]?.map(row => <>{row}</>)}
                                         </Stack>
                                     </AccordionDetails>
                                 </Accordion>
                             ))}
                     </>
                 )}
-            </Container>
+            </Paper>
         </footer>
     )
 }

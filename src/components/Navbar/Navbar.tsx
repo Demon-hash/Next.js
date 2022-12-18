@@ -33,7 +33,7 @@ const Navbar: React.FC<Props> = () => {
     const { t } = useTranslation(["navbar"])
 
     const theme = useTheme()
-    const [width, height] = useWindowSize()
+    const [width] = useWindowSize()
 
     const [authOpened, setAuthOpened] = useState<boolean>(false)
 

@@ -7,11 +7,11 @@ type Props = {
     discount?: number
 }
 
-const Price: React.FC<Props> = ({ price, discount }) => {
+const Price: React.FC<Props> = ({ price, discount = 0 }) => {
     const theme = useTheme()
     const priceWithDiscount = Math.max(
         0,
-        Math.floor(price * ((discount ?? 1) / 100)),
+        Math.floor(price * ((discount ?? 0) / 100)),
     )
 
     return (
