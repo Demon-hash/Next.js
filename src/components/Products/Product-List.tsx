@@ -25,7 +25,7 @@ const ProductList: React.FC<Props> = ({
 
     const [page, setPage] = useState<number>(1)
 
-    const changePage = (event: ChangeEvent<unknown>, page: number) => {
+    const changePage = (_event: ChangeEvent<unknown>, page: number) => {
         setPage(
             Math.max(
                 0,

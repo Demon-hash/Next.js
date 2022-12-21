@@ -25,7 +25,7 @@ type Props = {
     onClose: () => void
 }
 
-const Container = styled(Dialog)(() => ({ theme }) => ({}))
+const Container = styled(Dialog)(() => () => ({}))
 
 const Title = styled(DialogTitle)(({ theme }) => ({
     ...theme.typography.h3,

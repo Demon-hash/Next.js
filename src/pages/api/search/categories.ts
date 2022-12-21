@@ -1,12 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-
-type Data = {
-    categories: string[]
-}
+import { ICategories } from "../../../types/categories"
 
 export default function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data>,
+    res: NextApiResponse<ICategories>,
 ) {
     const { query, method } = req
     if (method !== "GET") return

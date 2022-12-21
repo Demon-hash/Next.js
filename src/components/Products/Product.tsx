@@ -1,34 +1,33 @@
 import React from "react"
-import {styled} from "@mui/material/styles"
-import {Paper, Skeleton, Stack, Typography, useTheme} from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { Paper, Skeleton, Stack, Typography, useTheme } from "@mui/material"
 import Image from "next/image"
 
 import styles from "../../styles/components/image.module.css"
-import {IProduct} from "../../types/product"
+import { IProduct } from "../../types/product"
 import Colors from "./Colors"
 import Price from "./Price"
-import Link from "next/link";
-import {StaticRoutes} from "../../static-routes";
+import Link from "next/link"
+import { StaticRoutes } from "../../static-routes"
 
 type Props = IProduct & {
     gap: number
 }
 
 const Product: React.FC<Props> = ({
-                                      id,
-                                      name,
-                                      img,
-                                      price,
-                                      gap,
-                                      brand,
-                                      colors,
-                                      rating,
-                                      discount,
-                                  }) => {
+    id,
+    name,
+    img,
+    price,
+    gap,
+    brand,
+    colors,
+    discount,
+}) => {
     const width = `calc(25% - ${gap * 10}px)`
     const theme = useTheme()
 
-    const Item = styled(Paper)(({theme}) => ({
+    const Item = styled(Paper)(({ theme }) => ({
         position: "relative",
         [theme.breakpoints.between("xs", "sm")]: {
             width: `calc(100% - ${gap * 10}px)`,
@@ -51,9 +50,9 @@ const Product: React.FC<Props> = ({
     }))
 
     return name.length ? (
-            <Item>
-                <div className={styles.imageContainer} role="img">
-                    <Link href={`${StaticRoutes.Product.template}/${id}`}>
+        <Item>
+            <div className={styles.imageContainer} role="img">
+                <Link href={`${StaticRoutes.Product.template}/${id}`}>
                     <Image
                         src={img}
                         className={styles.image}
@@ -61,39 +60,39 @@ const Product: React.FC<Props> = ({
                         fill
                         loading="lazy"
                     />
-                    </Link>
-                </div>
-                <Colors colors={colors}/>
-                <Stack
-                    spacing={0.5}
+                </Link>
+            </div>
+            <Colors colors={colors} />
+            <Stack
+                spacing={0.5}
+                sx={{
+                    margin: theme.spacing(2, "auto"),
+                }}
+            >
+                <Typography
+                    variant="h6"
+                    component="p"
                     sx={{
-                        margin: theme.spacing(2, "auto"),
+                        fontWeight: "bold",
+                        color: theme.palette.primary.dark,
                     }}
                 >
-                    <Typography
-                        variant="h6"
-                        component="p"
-                        sx={{
-                            fontWeight: "bold",
-                            color: theme.palette.primary.dark,
-                        }}
-                    >
-                        {brand}
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        component="p"
-                        sx={{
-                            color: theme.palette.primary.dark,
-                        }}
-                    >
-                        {name}
-                    </Typography>
-                    <Price price={price} discount={discount}/>
-                </Stack>
-            </Item>
+                    {brand}
+                </Typography>
+                <Typography
+                    variant="body1"
+                    component="p"
+                    sx={{
+                        color: theme.palette.primary.dark,
+                    }}
+                >
+                    {name}
+                </Typography>
+                <Price price={price} discount={discount} />
+            </Stack>
+        </Item>
     ) : (
-        <Skeleton variant="rounded" width={width} height={300}/>
+        <Skeleton variant="rounded" width={width} height={300} />
     )
 }
 

@@ -1,12 +1,16 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -16,15 +20,34 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "overrides": [
-    ],
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "jsx-a11y",
+        "react-hooks",
+        "prettier",
+        "testing-library"
     ],
+    "overrides": [
+        {
+            "files": [
+                "**/__tests__/**/*.[jt]s?(x)",
+                "**/?(*.)+(spec|test).[jt]s?(x)"
+            ],
+            "extends": ["plugin:testing-library/react"]
+        }
+    ],
+    "ignorePatterns": [
+        "node_modules"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "off",
+        "prettier/prettier": "error",
+        "jsx-a11y/rule-name": "warn",
         "@typescript-eslint/ban-types": [
             "error",
             {

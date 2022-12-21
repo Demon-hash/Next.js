@@ -10,7 +10,7 @@ import {
     useTheme,
 } from "@mui/material"
 import { SearchBar, LanguageSwitcher, Cart } from "../index"
-import Auth from "../Auth"
+import Auth from "./Auth"
 import { styled } from "@mui/material/styles"
 import { useTranslation } from "next-i18next"
 import AppConfig from "../../../app.config"

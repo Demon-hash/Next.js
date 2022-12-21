@@ -2,7 +2,7 @@ import React from "react"
 import { GetServerSideProps } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import AppConfig from "../../app.config"
-import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Box, Button, Grid, Paper, Typography } from "@mui/material"
 import { Carousel, Page, ProductList } from "../components"
 import { styled } from "@mui/material/styles"
 import banner from "../../public/assets/img/3.jpg"
@@ -11,6 +11,7 @@ import { IProduct } from "../types/product"
 import { useTranslation } from "next-i18next"
 import { useGetPopularClothes } from "../routes"
 import { useRouter } from "next/router"
+import Categories from "../components/Categories"
 
 const Container = styled(Paper)(({ theme }) => ({
     [theme.breakpoints.down("md")]: {
@@ -21,14 +22,6 @@ const Container = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1, 0),
     margin: theme.spacing(1, "auto"),
     borderBottom: `1px solid ${theme.palette.primary.light}`,
-}))
-
-const Navigation = styled(Stack)(({ theme }) => ({
-    width: "90%",
-    margin: "auto",
-    [theme.breakpoints.up("md")]: {
-        justifyContent: "flex-start",
-    },
 }))
 
 const GridContainer = styled(Grid)(({ theme }) => ({
@@ -44,8 +37,6 @@ const IndexPage: React.FC<Props> = () => {
     const { t } = useTranslation("common")
     const { locale } = useRouter()
 
-    const categories: string[] = [t("woman"), t("man"), t("kid")]
-
     const { data: products } = useGetPopularClothes<IProduct[]>({
         locale: locale ?? "",
         limit: 6,
@@ -56,13 +47,7 @@ const IndexPage: React.FC<Props> = () => {
     return (
         <Page>
             <Container elevation={0}>
-                <Navigation direction="row" alignItems="center" spacing={3}>
-                    {categories.map(item => (
-                        <Typography variant="body1" component="div" key={item}>
-                            {item}
-                        </Typography>
-                    ))}
-                </Navigation>
+                <Categories />
             </Container>
             <GridContainer container gap={2}>
                 <Grid item xs={12}>

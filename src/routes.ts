@@ -4,7 +4,7 @@ export const API_ROUTE = "/api"
 
 export const useSearchCategories = createRoute({
     method: "GET",
-    segments: ["categories"],
+    segments: ["search", "categories"],
     query: { locale: "" },
     hash: "",
 })
@@ -29,4 +29,3 @@ export const useGetCartOrders = createRoute({
     body: {},
     hash: "",
 })
-
