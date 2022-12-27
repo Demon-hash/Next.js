@@ -57,11 +57,11 @@ const Cart: React.FC = () => {
         })
             .then()
             .catch()
-    }, [opened])
+    }, [opened, locale])
 
     return (
         <div data-testid="cart">
-            <ShoppingCartIcon onClick={onOpen}>
+            <ShoppingCartIcon data-testid="open-cart-button" onClick={onOpen}>
                 <Badge badgeContent={4} color="warning">
                     <ShoppingCart />
                 </Badge>

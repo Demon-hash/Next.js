@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react"
+import React, { useState } from "react"
 import { styled } from "@mui/material/styles"
 import {
     Box,
@@ -123,10 +123,7 @@ const Categories: React.FC = () => {
     return (
         <Navigation direction="row" alignItems="center" spacing={3}>
             {categories.map(item => (
-                <Box
-                    key={item}
-                    onMouseEnter={handlePopoverOpen}
-                >
+                <Box key={item} onMouseEnter={handlePopoverOpen}>
                     <Typography variant="body1" component="div">
                         <Stack direction="row">
                             <span>{item}</span>
@@ -157,7 +154,7 @@ const Categories: React.FC = () => {
                                     size="small"
                                     sx={{
                                         width: "50%",
-                                        background: "red"
+                                        background: "red",
                                     }}
                                 >
                                     <TableHead>
@@ -183,11 +180,15 @@ const Categories: React.FC = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <Stack direction="row" sx={{
-                                background: "green"
-                            }}>
-                                {[1, 2, 3].map(() => (
+                            <Stack
+                                direction="row"
+                                sx={{
+                                    background: "green",
+                                }}
+                            >
+                                {[1, 2, 3].map((_, index) => (
                                     <Box
+                                        key={index}
                                         sx={{
                                             width: "200px",
                                         }}

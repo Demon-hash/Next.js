@@ -7,8 +7,8 @@ interface ICategory {
     children?: ICategory[]
 
     popular?: {
-        id: string[];
-        img: string[];
+        id: string[]
+        img: string[]
     }
 }
 

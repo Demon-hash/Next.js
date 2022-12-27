@@ -199,7 +199,7 @@ const Footer: React.FC = () => {
         }, {})
 
         return [desk, mob]
-    }, [brands])
+    }, [brands, createAndFillTable, createBrandLinks, headers])
 
     return (
         <footer>
