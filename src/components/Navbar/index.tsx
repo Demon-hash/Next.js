@@ -26,9 +26,7 @@ const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     margin: 0,
 }))
 
-type Props = {}
-
-const Navbar: React.FC<Props> = () => {
+const Navbar: React.FC = () => {
     const Company = AppConfig.appName
     const { t } = useTranslation(["navbar"])
 

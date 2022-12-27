@@ -1,6 +1,6 @@
 import Footer from "./Navigation/Footer"
 import Header from "./Navigation/Header"
-import Navbar from "./Navbar/Navbar"
+import Navbar from "./Navbar"
 import LanguageSwitcher from "./Navbar/Language-Switcher"
 import SearchBar from "./Navbar/Search-Bar"
 import Page from "./Page"

@@ -41,9 +41,7 @@ const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     color: theme.palette?.appNavBar?.contrastText,
 }))
 
-type Props = {}
-
-const Cart: React.FC<Props> = () => {
+const Cart: React.FC = () => {
     const { t } = useTranslation("cart")
     const { locale } = useRouter()
 
@@ -62,7 +60,7 @@ const Cart: React.FC<Props> = () => {
     }, [opened])
 
     return (
-        <div>
+        <div data-testid="cart">
             <ShoppingCartIcon onClick={onOpen}>
                 <Badge badgeContent={4} color="warning">
                     <ShoppingCart />
