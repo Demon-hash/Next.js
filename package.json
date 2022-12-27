@@ -9,7 +9,7 @@
     "lint": "next lint --fix",
     "lint-staged": "lint-staged --config lint-staged.js",
     "prettier": "prettier src --write",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
