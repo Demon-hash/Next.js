@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import React, {useRef, useState} from "react"
 import { styled } from "@mui/material/styles"
 import {
+    Box,
     Paper,
     Popover,
     Stack,
@@ -35,7 +36,6 @@ type Data = {
 }
 
 import img from "../../../public/assets/img/1.jpg"
-import styles from "../../styles/components/image.module.css"
 
 const Categories: React.FC = () => {
     const { t } = useTranslation("common")
@@ -117,26 +117,23 @@ const Categories: React.FC = () => {
     }
 
     const [rows] = useState<Data[]>(createRows(table))
-    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
     return (
         <Navigation direction="row" alignItems="center" spacing={3}>
             {categories.map(item => (
-                <React.Fragment key={item}>
-                    <Typography
-                        variant="body1"
-                        component="div"
-                        onMouseEnter={handlePopoverOpen}
-                    >
+                <Box
+                    key={item}
+                    onMouseEnter={handlePopoverOpen}
+                >
+                    <Typography variant="body1" component="div">
                         <Stack direction="row">
                             <span>{item}</span>
                             <ExpandMoreIcon />
                         </Stack>
                     </Typography>
                     <Popover
-                        sx={{
-                            pointerEvents: "none",
-                        }}
                         open={!!anchorEl}
                         anchorEl={anchorEl}
                         anchorOrigin={{
@@ -152,14 +149,15 @@ const Categories: React.FC = () => {
                     >
                         <Stack
                             direction="row"
-                            sx={{
-                                width: "100vw",
-                            }}
+                            justifyContent="center"
+                            justifyItems="center"
                         >
                             <TableContainer component={Paper} elevation={0}>
                                 <Table
+                                    size="small"
                                     sx={{
-                                        width: "40%",
+                                        width: "50%",
+                                        background: "red"
                                     }}
                                 >
                                     <TableHead>
@@ -185,22 +183,29 @@ const Categories: React.FC = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            {[1, 2, 3].map(() => (
-                                <div
-                                    className={styles.imageContainer}
-                                    role="img"
-                                >
-                                    <Image
-                                        src={img}
-                                        alt="*"
-                                        style={{ objectFit: "contain" }}
-                                        loading="lazy"
-                                    />
-                                </div>
-                            ))}
+                            <Stack direction="row" sx={{
+                                background: "green"
+                            }}>
+                                {[1, 2, 3].map(() => (
+                                    <Box
+                                        sx={{
+                                            width: "200px",
+                                        }}
+                                    >
+                                        <Image
+                                            src={img}
+                                            alt="*"
+                                            style={{ objectFit: "contain" }}
+                                            width={200}
+                                            height={200}
+                                            loading="lazy"
+                                        />
+                                    </Box>
+                                ))}
+                            </Stack>
                         </Stack>
                     </Popover>
-                </React.Fragment>
+                </Box>
             ))}
         </Navigation>
     )

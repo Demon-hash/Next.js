@@ -5,6 +5,11 @@ interface ICategory {
     title: string
     parent?: string
     children?: ICategory[]
+
+    popular?: {
+        id: string[];
+        img: string[];
+    }
 }
 
 const createCategory = ({
