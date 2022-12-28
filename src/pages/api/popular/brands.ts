@@ -15,12 +15,12 @@ export default function handler(
                     break
                 case "ru":
                     res.status(200).json({
-                        brands: ["Adidas", "Puma", "Reebok", "Nike"],
+                        brands: ["Puma", "Adidas", "Nike", "Reebok"],
                     })
                     break
                 case "de":
                     res.status(200).json({
-                        brands: ["Adidas", "Puma", "Reebok", "Nike"],
+                        brands: ["Nike", "Puma", "Adidas", "Reebok"],
                     })
                     break
                 default:

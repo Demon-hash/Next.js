@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import Cart from "../components/Navbar/Cart"
@@ -6,7 +6,7 @@ import Cart from "../components/Navbar/Cart"
 jest.mock("next/router", () => require("next-router-mock"))
 jest.mock("react-i18next", () => ({
     useTranslation: () => ({
-        t: (str: string) => str
+        t: (str: string) => str,
     }),
 }))
 

@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { useRouter } from "next/router"
 import {
     FormControl,
-    FormControlProps,
     MenuItem,
     Select,
     SelectChangeEvent,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const LanguageForm = styled(FormControl)<FormControlProps>(() => ({
+const LanguageForm = styled(FormControl)(() => ({
     ".MuiOutlinedInput-root": {
         "& > fieldset": {
             border: 0,
@@ -35,7 +34,7 @@ const LanguageSwitcher: React.FC<Props> = () => {
         { code: "en", name: "English" },
         { code: "ru", name: "Русский" },
         { code: "de", name: "Deutsch" },
-    ]
+    ];
 
     const [language, setLanguage] = useState<typeof languages[0]>(
         languages[
@@ -68,7 +67,7 @@ const LanguageSwitcher: React.FC<Props> = () => {
                 onChange={changeLanguage}
             >
                 {languages.map(el => (
-                    <MenuItem value={el.code} key={el.code}>
+                    <MenuItem value={el.code} key={el.name}>
                         {el.name}
                     </MenuItem>
                 ))}
