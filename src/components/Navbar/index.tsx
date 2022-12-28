@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import {
     AppBar,
     AppBarProps,
@@ -39,16 +39,16 @@ const Navbar: React.FC = () => {
     const closeAuthDialog = () => setAuthOpened(false)
 
     // Hydration error fix
-    const mobileHtml = (
+    const mobileHtml = useMemo(() => (
         <>
             <Box sx={{flexGrow: 1}}/>
             <IconButton size="large">
                 <MenuIcon/>
             </IconButton>
         </>
-    )
+    ), []);
 
-    const desktopHtml = (
+    const desktopHtml = useMemo(() => (
         <>
             <LanguageSwitcher/>
             <Box sx={{flexGrow: 1}}/>
@@ -58,10 +58,10 @@ const Navbar: React.FC = () => {
             </Button>
             <Auth open={authOpened} onClose={closeAuthDialog}/>
         </>
-    )
+    ), [authOpened, t]);
 
     const [content, setContent] = useState(mobileHtml);
-    useEffect(() => width >= theme.breakpoints.values.md ? setContent(desktopHtml) : setContent(mobileHtml), [width]);
+    useEffect(() => width >= theme.breakpoints.values.md ? setContent(desktopHtml) : setContent(mobileHtml), [theme.breakpoints.values.md, desktopHtml, mobileHtml, width]);
 
     return (
         <Box sx={{flexGrow: 1}}>

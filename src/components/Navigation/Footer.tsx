@@ -298,7 +298,7 @@ const Footer: React.FC = () => {
     }, [brands, headers, createBrandLinks, table])
 
     // Hydration fix
-    const mobileHtml = (
+    const mobileHtml = useMemo(() => (
         <>
             {mobile &&
                 headers.map(h => (
@@ -327,9 +327,9 @@ const Footer: React.FC = () => {
                     </Accordion>
                 ))}
         </>
-    )
+    ), [headers, mobile]);
 
-    const desktopHtml = (
+    const desktopHtml = useMemo(() => (
         <TableContainer component={Paper}>
             <MyTable>
                 <caption>
@@ -357,10 +357,10 @@ const Footer: React.FC = () => {
                 </TableBody>
             </MyTable>
         </TableContainer>
-    )
+    ), [Year, Company, desktop, headers]);
 
     const [content, setContent] = useState(mobileHtml);
-    useEffect(() => width >= theme.breakpoints.values.md ? setContent(desktopHtml) : setContent(mobileHtml), [width]);
+    useEffect(() => width >= theme.breakpoints.values.md ? setContent(desktopHtml) : setContent(mobileHtml), [theme.breakpoints.values.md, mobileHtml, desktopHtml, width]);
 
     return (
         <footer>
