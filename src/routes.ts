@@ -23,6 +23,13 @@ export const useGetPopularBrands = createRoute({
     hash: "",
 })
 
+export const useGetBannerSlides = createRoute({
+    method: "GET",
+    segments: ["banner", "slides"],
+    query: {},
+    hash: "",
+})
+
 export const useGetCartOrders = createRoute({
     method: "PATCH",
     segments: ["cart"],

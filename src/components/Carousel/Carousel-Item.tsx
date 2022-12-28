@@ -1,20 +1,22 @@
 import React from "react"
-import { StaticImageData } from "next/dist/client/image"
 import Image from "next/image"
 import { Paper } from "@mui/material"
+import { ICarouselItem } from "../../types/carousel-item"
 
-type Type = {
-    img: string | StaticImageData
+type Type = ICarouselItem & {
+    width: number
     height: number
 }
 
-const CarouselItem: React.FC<Type> = ({ img, height }) => {
+const CarouselItem: React.FC<Type> = ({ img, width, height }) => {
     return (
         <Paper elevation={0} sx={{ maxHeight: height, overflow: "hidden" }}>
             <Image
                 src={img}
                 alt="*"
-                style={{ objectFit: "contain" }}
+                width={width}
+                height={768}
+                style={{ objectFit: "cover" }}
                 loading="lazy"
             />
         </Paper>

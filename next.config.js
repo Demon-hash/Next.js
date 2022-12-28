@@ -9,6 +9,6 @@ module.exports = {
   ...nextConfig,
   i18n,
   images: {
-    domains: ["m.media-amazon.com", "www.google.com"]
+    domains: ["m.media-amazon.com", "www.google.com", "helpx.adobe.com"]
   }
 }

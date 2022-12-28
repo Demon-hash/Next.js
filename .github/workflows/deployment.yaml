@@ -1,8 +1,5 @@
 name: Deployment
 
-env:
-  NODE_VERSION: 16
-
 on:
   push:
     branches: ['main']
@@ -11,17 +8,43 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: mkdir -p ./artifacts
-      - run: touch log.txt ./artifacts
 
+      - name: Install deps
+        run: npm ci
+
+      - name: Linting
+        run: npm run lint
+
+  tests:
+    needs: [lint]
+    strategy:
+      matrix:
+        version: [14, 16, 18]
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.version }}
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Running tests
+        run: npm run test
+
+  build:
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,21 +54,8 @@ jobs:
       - name: Npm install
         run: npm ci
 
-      - name: Tests
-        run: npm run test
-
       - name: Build
         run: npm run build
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: Artifacts
-          path: ./build/artifacts
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        if: failure()
-        with:
-          name: Artifacts
-          path: ./build/artifacts
+  deploy:
+    needs: [build]
