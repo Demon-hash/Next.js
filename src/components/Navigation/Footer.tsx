@@ -298,75 +298,81 @@ const Footer: React.FC = () => {
     }, [brands, headers, createBrandLinks, table])
 
     // Hydration fix
-    const mobileHtml = useMemo(() => (
-        <>
-            {mobile &&
-                headers.map(h => (
-                    <Accordion key={h}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                        >
-                            <Typography>{h}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Stack
-                                direction="column"
-                                alignItems="center"
-                                justifyContent="center"
-                                spacing={2}
-                            >
-                                {mobile[asDataKey(h)]?.map(
-                                    (row, i) => (
+    const mobileHtml = useMemo(
+        () => (
+            <>
+                {mobile &&
+                    headers.map(h => (
+                        <Accordion key={h}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography>{h}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Stack
+                                    direction="column"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    spacing={2}
+                                >
+                                    {mobile[asDataKey(h)]?.map((row, i) => (
                                         <React.Fragment key={i}>
                                             <>{row}</>
                                         </React.Fragment>
-                                    ),
-                                )}
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
-        </>
-    ), [headers, mobile]);
-
-    const desktopHtml = useMemo(() => (
-        <TableContainer component={Paper}>
-            <MyTable>
-                <caption>
-                    {Year} {Company}
-                </caption>
-                <TableHead>
-                    <TableRow>
-                        {headers.map(h => (
-                            <Cell key={h}>{h}</Cell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {desktop?.map((row, i) => (
-                        <TableRow key={i}>
-                            <Cell component="th" scope="row">
-                                {row.brand}
-                            </Cell>
-                            <Cell>{row.company}</Cell>
-                            <Cell>{row.help}</Cell>
-                            <Cell>{row.account}</Cell>
-                            <Cell>{row.social}</Cell>
-                        </TableRow>
+                                    ))}
+                                </Stack>
+                            </AccordionDetails>
+                        </Accordion>
                     ))}
-                </TableBody>
-            </MyTable>
-        </TableContainer>
-    ), [Year, Company, desktop, headers]);
+            </>
+        ),
+        [headers, mobile],
+    )
 
-    const [content, setContent] = useState(mobileHtml);
-    useEffect(() => width >= theme.breakpoints.values.md ? setContent(desktopHtml) : setContent(mobileHtml), [theme.breakpoints.values.md, mobileHtml, desktopHtml, width]);
+    const desktopHtml = useMemo(
+        () => (
+            <TableContainer component={Paper}>
+                <MyTable>
+                    <caption>
+                        {Year} {Company}
+                    </caption>
+                    <TableHead>
+                        <TableRow>
+                            {headers.map(h => (
+                                <Cell key={h}>{h}</Cell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {desktop?.map((row, i) => (
+                            <TableRow key={i}>
+                                <Cell component="th" scope="row">
+                                    {row.brand}
+                                </Cell>
+                                <Cell>{row.company}</Cell>
+                                <Cell>{row.help}</Cell>
+                                <Cell>{row.account}</Cell>
+                                <Cell>{row.social}</Cell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </MyTable>
+            </TableContainer>
+        ),
+        [Year, Company, desktop, headers],
+    )
+
+    const [content, setContent] = useState(mobileHtml)
+    useEffect(
+        () =>
+            width >= theme.breakpoints.values.md
+                ? setContent(desktopHtml)
+                : setContent(mobileHtml),
+        [theme.breakpoints.values.md, mobileHtml, desktopHtml, width],
+    )
 
     return (
         <footer>
-            <Container elevation={0}>
-                {content}
-            </Container>
+            <Container elevation={0}>{content}</Container>
         </footer>
     )
 }

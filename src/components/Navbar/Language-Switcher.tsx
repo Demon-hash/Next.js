@@ -34,7 +34,7 @@ const LanguageSwitcher: React.FC<Props> = () => {
         { code: "en", name: "English" },
         { code: "ru", name: "Русский" },
         { code: "de", name: "Deutsch" },
-    ];
+    ]
 
     const [language, setLanguage] = useState<typeof languages[0]>(
         languages[
