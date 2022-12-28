@@ -1,4 +1,4 @@
-import React, {ReactElement, useCallback, useMemo} from "react"
+import React, { ReactElement, useCallback, useMemo } from "react"
 import { styled } from "@mui/material/styles"
 import {
     Paper,
@@ -38,95 +38,121 @@ const Categories: React.FC = () => {
 
     const { data } = getWomenCategoriesTable<ICategoriesTable>({})
 
-    const getTitleWithFallback = useCallback((entity: ICategoriesTable) => {
-        if (!entity?.title) return "undefined"
-        return (
-            entity?.title?.[
-                (typeof locale === "string"
-                    ? locale
-                    : AppConfig.defaultAppLanguage) as keyof ICategoryTitleWithLanguages
-            ] ?? "undefined"
-        )
-    }, [locale]);
+    const getTitleWithFallback = useCallback(
+        (entity: ICategoriesTable) => {
+            if (!entity?.title) return "undefined"
+            return (
+                entity?.title?.[
+                    (typeof locale === "string"
+                        ? locale
+                        : AppConfig.defaultAppLanguage) as keyof ICategoryTitleWithLanguages
+                ] ?? "undefined"
+            )
+        },
+        [locale],
+    )
 
-    const getTableHeight = useCallback((body: [ICategoriesTable[]]) =>
-        Object.values(body).reduce(
-            (p, c, i, a) => (a[p].length > c.length ? p : i),
-            0,
-        ), [])
+    const getTableHeight = useCallback(
+        (body: [ICategoriesTable[]]) =>
+            Object.values(body).reduce(
+                (p, c, i, a) => (a[p].length > c.length ? p : i),
+                0,
+            ),
+        [],
+    )
 
-    const createCellWithLink = useCallback((entity: ICategoriesTable | undefined) => {
-        if (typeof entity === "undefined") return <Cell></Cell>
-        return (
-            <Cell key={entity.id}>
-                <Link
-                    href={`${StaticRoutes.Category.template + "/" + entity.id}`}
-                >
-                    {getTitleWithFallback(entity)}
-                </Link>
-            </Cell>
-        )
-    }, [getTitleWithFallback])
+    const createCellWithLink = useCallback(
+        (entity: ICategoriesTable | undefined) => {
+            if (typeof entity === "undefined") return <Cell></Cell>
+            return (
+                <Cell key={entity.id}>
+                    <Link
+                        href={`${
+                            StaticRoutes.Category.template + "/" + entity.id
+                        }`}
+                    >
+                        {getTitleWithFallback(entity)}
+                    </Link>
+                </Cell>
+            )
+        },
+        [getTitleWithFallback],
+    )
 
-    const getTableHeaders = useCallback((table: ICategoriesTable | undefined) =>
-        table?.children?.map(v => createCellWithLink(v)) ?? [], [createCellWithLink])
+    const getTableHeaders = useCallback(
+        (table: ICategoriesTable | undefined) =>
+            table?.children?.map(v => createCellWithLink(v)) ?? [],
+        [createCellWithLink],
+    )
 
-    const unpack = useCallback((
-        table: ICategoriesTable | ICategoriesTable[] | undefined,
-    ): ICategoriesTable[] => {
-        if (table == undefined) return []
-        const res: ICategoriesTable[] = []
+    const unpack = useCallback(
+        (
+            table: ICategoriesTable | ICategoriesTable[] | undefined,
+        ): ICategoriesTable[] => {
+            if (table == undefined) return []
+            const res: ICategoriesTable[] = []
 
-        if (Array.isArray(table)) {
-            table.forEach(v => {
-                res.push(v, ...unpack(v.children))
-            })
-        } else {
-            return [table]
-        }
-
-        return res
-    }, []);
-
-    const createTableCells = useCallback((
-        headers: ReactElement[],
-        table: [ICategoriesTable[]],
-        height: number,
-    ): ReactElement[] => {
-        const cells = []
-        for (let index = 0; index < table[height].length; index++) {
-            for (let j = 0; j < headers.length; j++) {
-                cells.push(createCellWithLink(table?.[j]?.[index]))
+            if (Array.isArray(table)) {
+                table.forEach(v => {
+                    res.push(v, ...unpack(v.children))
+                })
+            } else {
+                return [table]
             }
-        }
-        return cells
-    }, [createCellWithLink])
 
-    const partition = useCallback((array: ReactElement[], n: number): ReactElement[][] => {
-        return array.length
-            ? [array.splice(0, n)].concat(partition(array, n))
-            : []
-    }, [])
+            return res
+        },
+        [],
+    )
 
-    const createTableData = useCallback((table: ICategoriesTable) => {
-        const headers = getTableHeaders(table)
+    const createTableCells = useCallback(
+        (
+            headers: ReactElement[],
+            table: [ICategoriesTable[]],
+            height: number,
+        ): ReactElement[] => {
+            const cells = []
+            for (let index = 0; index < table[height].length; index++) {
+                for (let j = 0; j < headers.length; j++) {
+                    cells.push(createCellWithLink(table?.[j]?.[index]))
+                }
+            }
+            return cells
+        },
+        [createCellWithLink],
+    )
 
-        const body: [ICategoriesTable[]] =
-            table?.children?.reduce(
-                (acc, _, inx, arr) => ({
-                    ...acc,
-                    [inx]: unpack(arr[inx]?.children),
-                }),
-                {} as [ICategoriesTable[]],
-            ) ?? ({} as [ICategoriesTable[]])
+    const partition = useCallback(
+        (array: ReactElement[], n: number): ReactElement[][] => {
+            return array.length
+                ? [array.splice(0, n)].concat(partition(array, n))
+                : []
+        },
+        [],
+    )
 
-        const columns = partition(
-            createTableCells(headers, body, getTableHeight(body)),
-            headers.length,
-        )
+    const createTableData = useCallback(
+        (table: ICategoriesTable) => {
+            const headers = getTableHeaders(table)
 
-        return { headers, columns }
-    }, [createTableCells, getTableHeaders, getTableHeight, partition, unpack]);
+            const body: [ICategoriesTable[]] =
+                table?.children?.reduce(
+                    (acc, _, inx, arr) => ({
+                        ...acc,
+                        [inx]: unpack(arr[inx]?.children),
+                    }),
+                    {} as [ICategoriesTable[]],
+                ) ?? ({} as [ICategoriesTable[]])
+
+            const columns = partition(
+                createTableCells(headers, body, getTableHeight(body)),
+                headers.length,
+            )
+
+            return { headers, columns }
+        },
+        [createTableCells, getTableHeaders, getTableHeight, partition, unpack],
+    )
 
     const [title, headers, columns] = useMemo(() => {
         if (data == undefined) return [null, [], []]
