@@ -30,4 +30,7 @@ export namespace StaticRoutes {
     export enum Product {
         template = "/product",
     }
+    export enum Category {
+        template = "/category",
+    }
 }

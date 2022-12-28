@@ -30,6 +30,13 @@ export const useGetBannerSlides = createRoute({
     hash: "",
 })
 
+export const getWomenCategoriesTable = createRoute({
+    method: "GET",
+    segments: ["categories", "women"],
+    query: {},
+    hash: "",
+})
+
 export const useGetCartOrders = createRoute({
     method: "PATCH",
     segments: ["cart"],

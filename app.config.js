@@ -1,6 +1,6 @@
 const AppConfig = {
     appName: "Shopify",
-    defaultAppLanguage: 'en',
+    defaultAppLanguage: 'en', // see also types > categories
     currency: "$",
 }
 

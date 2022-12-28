@@ -1,9 +1,8 @@
-import React, { useState } from "react"
-import { styled } from "@mui/material/styles"
+import React, {ReactElement, useEffect, useMemo, useState} from "react"
+import {styled} from "@mui/material/styles"
 import {
     Box,
     Paper,
-    Popover,
     Stack,
     Table,
     TableBody,
@@ -13,11 +12,10 @@ import {
     TableRow,
     Typography,
 } from "@mui/material"
-import { useTranslation } from "next-i18next"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import Image from "next/image"
 
-const Navigation = styled(Stack)(({ theme }) => ({
+const Navigation = styled(Stack)(({theme}) => ({
     width: "90%",
     margin: "auto",
     [theme.breakpoints.up("md")]: {
@@ -29,185 +27,156 @@ const Cell = styled(TableCell)(() => ({
     border: 0,
 }))
 
-type Data = {
-    clothing: string
-    shoes: string
-    watches: string
-}
-
 import img from "../../../public/assets/img/1.jpg"
+import {getWomenCategoriesTable} from "../../routes"
+import {
+    ICategoriesTable,
+    ICategoryTitleWithLanguages,
+} from "../../types/categories"
+import {useRouter} from "next/router"
+import AppConfig from "../../../app.config"
+import Link from "next/link"
+import {StaticRoutes} from "../../static-routes"
 
 const Categories: React.FC = () => {
-    const { t } = useTranslation("common")
-    const categories: string[] = [t("woman")] //, t("man"), t("kid")];
+    const {locale} = useRouter()
 
-    const headers = [
-        "CLOTHING",
-        "SHOES",
-        "WATCHES", // "JEWELLERY", "EYEWEAR", "HANDBAGS & CLUTCHES"
-    ]
+    const {data} = getWomenCategoriesTable<ICategoriesTable>({})
 
-    const table: string[][] = [
-        [
-            "New Arrivals",
-            "Top Brands",
-            "All Western Wear",
-            "Shirts, Tops & Tees",
-            "Dresses",
-            "Jeans & Jeggings",
-            "All Ethnic Wear",
-            "Kurtas",
-            "Salwar Suits",
-            "Sarees",
-            "Lingerie, Sleep & Lounge",
-            "Sportswear",
-        ],
-        [
-            "Fashion Sandals",
-            "Pumps & Peeptoes",
-            "Casual Slippers",
-            "Casual Shoes",
-            "Boots",
-            "Sports Shoes",
-            "Flip-Flops",
-            "Ballet Flats",
-            "Ethnic Footwear",
-            "Formal Shoes",
-        ],
-        ["Gold & rose-gold", "Stainless steel", "Leather"],
-        /*[
-            "Gold & Diamond Jewellery",
-            "Traditional Imitation",
-            "Fashion Jewellery",
-            "Silver Jewellery",
-        ],
-        [
-            "Sunglasses",
-            "Spectacle Frames"
-        ],
-        [
-            "Handbags",
-            "Wallets"
-        ]*/
-    ]
+    const getTitleWithFallback = (entity: ICategoriesTable) => {
+        if (!entity?.title) return "undefined"
+        return (
+            entity?.title?.[
+                (typeof locale === "string"
+                    ? locale
+                    : AppConfig.defaultAppLanguage) as keyof ICategoryTitleWithLanguages
+                ] ?? "undefined"
+        )
+    }
 
-    const createRowData = (
-        clothing: string,
-        shoes: string,
-        watches: string,
-    ): Data => ({ clothing, shoes, watches })
+    const getTableHeaders = (table: ICategoriesTable | undefined) =>
+        table?.children?.map(v => createCellWithLink(v)) ?? []
 
-    const createRows = (table: string[][]): Data[] => {
-        const len = headers.length
-        const res: Data[] = []
+    const createCellWithLink = (entity: ICategoriesTable | undefined) => {
+        if (typeof entity === "undefined") return <Cell></Cell>
+        return (
+            <Cell key={entity.id}>
+                <Link
+                    href={`${StaticRoutes.Category.template + "/" + entity.id}`}
+                >
+                    {getTitleWithFallback(entity)}
+                </Link>
+            </Cell>
+        )
+    }
 
-        for (let i = 0; i < len; i++) {
-            res.push(createRowData(table[0][i], table[1][i], table[2][i]))
+    const unpack = (
+        table: ICategoriesTable | ICategoriesTable[] | undefined,
+    ): ICategoriesTable[] => {
+        if (table == undefined) return []
+        const res: ICategoriesTable[] = []
+
+        if (Array.isArray(table)) {
+            table.forEach(v => {
+                res.push(v, ...unpack(v.children))
+            })
+        } else {
+            return [table]
         }
 
         return res
     }
 
-    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget)
+    const partition = (array: ReactElement[], n: number): ReactElement[][] => {
+        return array.length ? [array.splice(0, n)].concat(partition(array, n)) : [];
     }
 
-    const handlePopoverClose = () => {
-        setAnchorEl(null)
+    const createTableData = (table: ICategoriesTable) => {
+        const headers = getTableHeaders(table)
+        const body =
+            table?.children?.reduce(
+                (acc, _, inx, arr) => ({
+                    ...acc,
+                    [inx]: unpack(arr[inx]?.children),
+                }),
+                {},
+            ) ?? {}
+
+        const cells = []
+        // const index = 0;
+
+        for (let index = 0; index < 3; index++) {
+            for (let j = 0; j < headers.length; j++) {
+                if (j === 0) {
+                    cells.push(body?.[j]?.[index] ? createCellWithLink(body[j][index]) : <Cell></Cell>)
+                } else {
+                    cells.push(body?.[j]?.[index] ? createCellWithLink(body[j][index]) : <Cell></Cell>)
+                }
+            }
+        }
+
+        const columns = partition(cells, Math.floor(cells.length / headers.length))
+
+        const content = (
+            <>
+                {columns.map((column, i) => (
+                    <TableRow key={i}>
+                        {
+                            column.map((row, i) => (
+                                <React.Fragment key={i}>
+                                    <>{row}</>
+                                </React.Fragment>
+                            ))
+                        }
+                    </TableRow>
+                ))}
+            </>
+        )
+
+        return {
+            headers,
+            content
+        }
     }
 
-    const [rows] = useState<Data[]>(createRows(table))
+    const [title, headers, table] = useMemo(() => {
+        if (data == undefined) return [null, [], []]
 
-    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+        const title = getTitleWithFallback(data);
+        const {headers, content} = createTableData(data);
+
+        return [title, headers, content]
+    }, [data, locale])
 
     return (
         <Navigation direction="row" alignItems="center" spacing={3}>
-            {categories.map(item => (
-                <Box key={item} onMouseEnter={handlePopoverOpen}>
-                    <Typography variant="body1" component="div">
-                        <Stack direction="row">
-                            <span>{item}</span>
-                            <ExpandMoreIcon />
-                        </Stack>
-                    </Typography>
-                    <Popover
-                        open={!!anchorEl}
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left",
+            <Stack
+                direction="row"
+                justifyContent="center"
+                justifyItems="center"
+            >
+                <TableContainer component={Paper} elevation={0}>
+                    <Table
+                        size="small"
+                        sx={{
+                            width: "100%",
                         }}
-                        transformOrigin={{
-                            vertical: "top",
-                            horizontal: "left",
-                        }}
-                        onClose={handlePopoverClose}
-                        disableRestoreFocus
                     >
-                        <Stack
-                            direction="row"
-                            justifyContent="center"
-                            justifyItems="center"
-                        >
-                            <TableContainer component={Paper} elevation={0}>
-                                <Table
-                                    size="small"
-                                    sx={{
-                                        width: "50%",
-                                        background: "red",
-                                    }}
-                                >
-                                    <TableHead>
-                                        <TableRow>
-                                            {headers.map(h => (
-                                                <Cell key={h}>{h}</Cell>
-                                            ))}
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {rows.map(row => (
-                                            <TableRow key={row.clothing}>
-                                                <Cell
-                                                    component="th"
-                                                    scope="row"
-                                                >
-                                                    {row.clothing}
-                                                </Cell>
-                                                <Cell>{row.shoes}</Cell>
-                                                <Cell>{row.watches}</Cell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <Stack
-                                direction="row"
-                                sx={{
-                                    background: "green",
-                                }}
-                            >
-                                {[1, 2, 3].map((_, index) => (
-                                    <Box
-                                        key={index}
-                                        sx={{
-                                            width: "200px",
-                                        }}
-                                    >
-                                        <Image
-                                            src={img}
-                                            alt="*"
-                                            style={{ objectFit: "contain" }}
-                                            width={200}
-                                            height={200}
-                                            loading="lazy"
-                                        />
-                                    </Box>
+                        <TableHead>
+                            <TableRow>
+                                {headers?.map((h, i) => (
+                                    <React.Fragment key={i}>
+                                        <>{h}</>
+                                    </React.Fragment>
                                 ))}
-                            </Stack>
-                        </Stack>
-                    </Popover>
-                </Box>
-            ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {table}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Stack>
         </Navigation>
     )
 }
