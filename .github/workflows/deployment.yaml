@@ -23,7 +23,7 @@ jobs:
     needs: [lint]
     strategy:
       matrix:
-        version: 18
+        version: [18]
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
