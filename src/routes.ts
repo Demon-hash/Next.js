@@ -37,6 +37,13 @@ export const getWomenCategoriesTable = createRoute({
     hash: "",
 })
 
+export const getMenCategoriesTable = createRoute({
+    method: "GET",
+    segments: ["categories", "men"],
+    query: {},
+    hash: "",
+})
+
 export const useGetCartOrders = createRoute({
     method: "PATCH",
     segments: ["cart"],

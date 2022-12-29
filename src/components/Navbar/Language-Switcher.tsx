@@ -20,7 +20,7 @@ const LanguageForm = styled(FormControl)(() => ({
 
 const SelectLanguage = styled(Select)<SelectProps>(({ theme }) => ({
     ".MuiSelect-outlined, .MuiSelect-icon": {
-        color: theme.palette?.appSearchBar?.contrastText,
+        color: theme.palette?.appSearchBar?.dark,
     },
 }))
 

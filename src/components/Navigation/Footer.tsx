@@ -16,7 +16,6 @@ import {
     Stack,
     Table,
     TableBody,
-    TableCell,
     TableContainer,
     TableHead,
     TableRow,
@@ -33,10 +32,7 @@ import AppConfig from "../../../app.config"
 import { useGetPopularBrands } from "../../routes"
 import { IBrands } from "../../types/brands"
 import { StaticRoutes } from "../../static-routes"
-
-const Cell = styled(TableCell)(() => ({
-    border: 0,
-}))
+import { Cell } from "../Shared/Cell"
 
 const Container = styled(Paper)(({ theme }) => ({
     width: "100%",
@@ -361,7 +357,7 @@ const Footer: React.FC = () => {
         [Year, Company, desktop, headers],
     )
 
-    const [content, setContent] = useState(mobileHtml)
+    const [content, setContent] = useState(desktopHtml)
     useEffect(
         () =>
             width >= theme.breakpoints.values.md

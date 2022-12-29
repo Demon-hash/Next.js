@@ -15,6 +15,7 @@ import { styled } from "@mui/material/styles"
 import { useRouter } from "next/router"
 import { useSearchCategories } from "../../routes"
 import { ICategories } from "../../types/categories"
+import { LanguageSwitcher } from "../index"
 
 const Container = styled(TextField)<TextFieldProps>(({ theme }) => ({
     [theme.breakpoints.down("md")]: {
@@ -96,15 +97,20 @@ const SearchBar: React.FC = () => {
                     </InputAdornment>
                 ),
                 endAdornment: (
-                    <InputAdornment position="end">
-                        <IconButton
-                            onClick={search}
-                            onMouseDown={search}
-                            edge="end"
-                        >
-                            <SearchIcon />
-                        </IconButton>
-                    </InputAdornment>
+                    <>
+                        <InputAdornment position="end">
+                            <LanguageSwitcher />
+                        </InputAdornment>
+                        <InputAdornment position="end">
+                            <IconButton
+                                onClick={search}
+                                onMouseDown={search}
+                                edge="end"
+                            >
+                                <SearchIcon />
+                            </IconButton>
+                        </InputAdornment>
+                    </>
                 ),
             }}
         />

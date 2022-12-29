@@ -9,7 +9,7 @@ import {
     Typography,
     useTheme,
 } from "@mui/material"
-import { SearchBar, LanguageSwitcher, Cart } from "../index"
+import { SearchBar, Cart } from "../index"
 import Auth from "./Auth"
 import { styled } from "@mui/material/styles"
 import { useTranslation } from "next-i18next"
@@ -54,7 +54,6 @@ const Navbar: React.FC = () => {
     const desktopHtml = useMemo(
         () => (
             <>
-                <LanguageSwitcher />
                 <Box sx={{ flexGrow: 1 }} />
                 <Cart />
                 <Button variant="outlined" onClick={openAuthDialog}>
@@ -66,7 +65,7 @@ const Navbar: React.FC = () => {
         [authOpened, t],
     )
 
-    const [content, setContent] = useState(mobileHtml)
+    const [content, setContent] = useState(desktopHtml)
     useEffect(
         () =>
             width >= theme.breakpoints.values.md

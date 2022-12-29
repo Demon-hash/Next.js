@@ -2,15 +2,20 @@ import React from "react"
 import { GetServerSideProps } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import AppConfig from "../../app.config"
-import { Box, Button, Grid, Paper, Typography } from "@mui/material"
-import { Carousel, Page, ProductList } from "../components"
+import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Carousel, Page, ProductList, Category } from "../components"
 import { styled } from "@mui/material/styles"
 import { IProduct } from "../types/product"
 import { useTranslation } from "next-i18next"
-import { useGetBannerSlides, useGetPopularClothes } from "../routes"
+import {
+    getWomenCategoriesTable,
+    getMenCategoriesTable,
+    useGetBannerSlides,
+    useGetPopularClothes,
+} from "../routes"
 import { useRouter } from "next/router"
-import Categories from "../components/Categories"
 import { ICarouselItem } from "../types/carousel-item"
+import { ICategoriesTable } from "../types/categories"
 
 const Container = styled(Paper)(({ theme }) => ({
     [theme.breakpoints.down("md")]: {
@@ -21,6 +26,14 @@ const Container = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1, 0),
     margin: theme.spacing(1, "auto"),
     borderBottom: `1px solid ${theme.palette.primary.light}`,
+}))
+
+const Navigation = styled(Stack)(({ theme }) => ({
+    width: "90%",
+    margin: "auto",
+    [theme.breakpoints.up("md")]: {
+        justifyContent: "flex-start",
+    },
 }))
 
 const GridContainer = styled(Grid)(({ theme }) => ({
@@ -45,11 +58,20 @@ const IndexPage: React.FC<Props> = () => {
     const { data: slides, isLoading: slidesIsLoading } = useGetBannerSlides<
         ICarouselItem[]
     >({})
+    const { data: womenData, isLoading: womenDataIsLoading } =
+        getWomenCategoriesTable<ICategoriesTable>({})
+    const { data: menData, isLoading: menDataIsLoading } =
+        getMenCategoriesTable<ICategoriesTable>({})
 
     return (
         <Page>
             <Container elevation={0}>
-                <Categories />
+                <Navigation direction="row" spacing={3}>
+                    {!womenDataIsLoading && (
+                        <Category id="women" data={womenData} />
+                    )}
+                    {!menDataIsLoading && <Category id="men" data={menData} />}
+                </Navigation>
             </Container>
             {!slidesIsLoading && (
                 <GridContainer container gap={2}>

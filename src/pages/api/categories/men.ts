@@ -36,7 +36,7 @@ const createCategory = ({
 }
 
 const women = createCategory({
-    title: withLanguages("Women", "женшине", "Women"),
+    title: withLanguages("Men", "Men", "Men"),
     children: [
         createCategory({
             title: withLanguages("Clothing", "Одежда", "Clothing"),

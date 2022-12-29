@@ -10,6 +10,7 @@ import Carousel from "./Carousel/Carousel"
 import CarouselItem from "./Carousel/Carousel-Item"
 import ProductList from "./Products/Product-List"
 import Product from "./Products/Product"
+import Category from "./Category"
 
 export {
     Footer,
@@ -24,4 +25,5 @@ export {
     CarouselItem,
     ProductList,
     Product,
+    Category,
 }
