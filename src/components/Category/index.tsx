@@ -29,7 +29,7 @@ import HoverPopover from "material-ui-popup-state/HoverPopover"
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp"
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
 import { useWindowSize } from "@react-hook/window-size"
-import { Cell } from "../Shared/Cell"
+import { Cell } from "../Shared"
 
 const MyTableContainer = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(2),

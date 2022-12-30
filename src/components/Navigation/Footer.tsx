@@ -32,7 +32,7 @@ import AppConfig from "../../../app.config"
 import { useGetPopularBrands } from "../../routes"
 import { IBrands } from "../../types/brands"
 import { StaticRoutes } from "../../static-routes"
-import { Cell } from "../Shared/Cell"
+import { Cell } from "../Shared"
 
 const Container = styled(Paper)(({ theme }) => ({
     width: "100%",

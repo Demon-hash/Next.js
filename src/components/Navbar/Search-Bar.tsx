@@ -18,11 +18,12 @@ import { ICategories } from "../../types/categories"
 import { LanguageSwitcher } from "../index"
 
 const Container = styled(TextField)<TextFieldProps>(({ theme }) => ({
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
         display: "none",
     },
     [theme.breakpoints.up("md")]: {
-        width: "50%",
+        minWidth: "50%",
+        maxWidth: "50%"
     },
     ".MuiOutlinedInput-root": {
         "& > fieldset": {

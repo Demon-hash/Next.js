@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, {useCallback, useEffect, useMemo, useState} from "react"
 import {
     AppBar,
     AppBarProps,
     Box,
-    Button,
+    Button, Drawer,
     IconButton,
     Toolbar,
     Typography,
@@ -17,6 +17,7 @@ import AppConfig from "../../../app.config"
 import { useWindowSize } from "@react-hook/window-size"
 
 import MenuIcon from "@mui/icons-material/Menu"
+import MobileMenu from "./Mobile-Menu";
 
 const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: theme.palette.appNavBar.main,
@@ -38,17 +39,28 @@ const Navbar: React.FC = () => {
     const openAuthDialog = () => setAuthOpened(true)
     const closeAuthDialog = () => setAuthOpened(false)
 
+    const [mobileMenuOpened, setMobileMenuOpened] = useState(false);
+
+    const changeMobileMenuFlag = useCallback((flag: boolean) => setMobileMenuOpened(flag), []);
+
     // Hydration error fix
     const mobileHtml = useMemo(
         () => (
             <>
                 <Box sx={{ flexGrow: 1 }} />
-                <IconButton size="large">
+                <IconButton size="large" onClick={() => changeMobileMenuFlag(true)}>
                     <MenuIcon />
                 </IconButton>
+                <Drawer
+                    anchor="right"
+                    open={mobileMenuOpened}
+                    onClose={() => changeMobileMenuFlag(false)}
+                >
+                   <MobileMenu/>
+                </Drawer>
             </>
         ),
-        [],
+        [mobileMenuOpened, changeMobileMenuFlag],
     )
 
     const desktopHtml = useMemo(

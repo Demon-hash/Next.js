@@ -3,7 +3,7 @@ describe('Language switcher', () => {
         cy.visit('/')
     })
 
-    it('exists in the laptop / desktop version', () => {
+    /*it('exists in the laptop / desktop version', () => {
         cy.viewport(1024, 768)
         cy.get("#language-switcher-list").should('exist')
     })
@@ -11,7 +11,7 @@ describe('Language switcher', () => {
     it('doesnt exists in the mobile version', () => {
         cy.viewport(550, 750)
         cy.get("#language-switcher-list").should('not.exist')
-    })
+    })*/
 
     it('redirects on value change', () => {
         cy.get("#language-switcher-list").click()
