@@ -60,11 +60,12 @@ const LanguageSwitcher: React.FC<Props> = () => {
     }
 
     return (
-        <LanguageForm variant="outlined">
+        <LanguageForm variant="outlined" id="language-switcher">
             <SelectLanguage
                 defaultValue={languages[0].code}
                 value={language.code}
                 onChange={changeLanguage}
+                id="language-switcher-list"
             >
                 {languages.map(el => (
                     <MenuItem value={el.code} key={el.name}>

@@ -76,8 +76,8 @@ const Navbar: React.FC = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <MyAppBar position="relative" elevation={0}>
-                <Toolbar>
+            <MyAppBar position="relative" elevation={0} id="navbar">
+                <Toolbar id="navbar-toolbar">
                     <Typography
                         variant="h6"
                         component="div"

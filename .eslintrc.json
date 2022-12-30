@@ -9,7 +9,8 @@
         "plugin:react/recommended",
         "plugin:@next/next/recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:cypress/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

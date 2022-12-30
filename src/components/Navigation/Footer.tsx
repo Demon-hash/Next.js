@@ -367,7 +367,7 @@ const Footer: React.FC = () => {
     )
 
     return (
-        <footer>
+        <footer id="footer">
             <Container elevation={0}>{content}</Container>
         </footer>
     )
