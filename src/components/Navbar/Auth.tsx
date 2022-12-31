@@ -19,7 +19,8 @@ import FacebookIcon from "@mui/icons-material/Facebook"
 import TwitterIcon from "@mui/icons-material/Twitter"
 import GoogleIcon from "@mui/icons-material/Google"
 import { useTranslation } from "next-i18next"
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from "@mui/icons-material/Close"
+import { DialogTransition } from "../Shared"
 
 const Container = styled(Dialog)(() => () => ({}))
 
@@ -66,8 +67,8 @@ const TextInput = styled(TextField)<TextFieldProps>(({ theme }) => ({
 const CloseFullscreenIcon = styled(CloseIcon)(({ theme }) => ({
     color: theme.palette?.appNavBar?.contrastText,
     position: "absolute",
-    top: 15,
-    right: 15
+    top: theme.spacing(2),
+    right: theme.spacing(2),
 }))
 
 type Props = {
@@ -80,10 +81,15 @@ const Auth: React.FC<Props> = ({ open, onClose, fullScreen }) => {
     const { t } = useTranslation("auth")
 
     return (
-        <Container open={open} onClose={onClose} fullScreen={fullScreen}>
+        <Container
+            open={open}
+            onClose={onClose}
+            fullScreen={fullScreen}
+            TransitionComponent={DialogTransition}
+        >
             {fullScreen && (
                 <IconButton onClick={onClose}>
-                    <CloseFullscreenIcon/>
+                    <CloseFullscreenIcon />
                 </IconButton>
             )}
             <Title>{t("title")}</Title>
