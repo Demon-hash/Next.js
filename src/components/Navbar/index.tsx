@@ -3,8 +3,7 @@ import {
     AppBar,
     AppBarProps,
     Box,
-    Button,
-    Drawer,
+    Button, Dialog,
     IconButton,
     Toolbar,
     Typography,
@@ -19,7 +18,9 @@ import { useWindowSize } from "@react-hook/window-size"
 
 import MenuIcon from "@mui/icons-material/Menu"
 
-import MobileMenu from "./Mobile-Menu"
+import {DialogAppBar, DialogSearchIcon, DialogTransition} from "../Shared";
+import CloseIcon from "@mui/icons-material/Close";
+import PersonIcon from "@mui/icons-material/Person";
 
 const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: theme.palette.appNavBar.main,
@@ -57,12 +58,33 @@ const Navbar: React.FC = () => {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Drawer anchor="bottom" open={mobileMenuOpened}>
-                    <MobileMenu onClose={() => changeMobileMenuFlag(false)} />
-                </Drawer>
+                <Dialog
+                    fullScreen
+                    open={mobileMenuOpened}
+                    onClose={() => changeMobileMenuFlag(false)}
+                    TransitionComponent={DialogTransition}
+                >
+                    <DialogAppBar sx={{ position: "relative" }}>
+                        <Toolbar>
+                            <IconButton
+                                edge="start"
+                                onClick={() => changeMobileMenuFlag(false)}
+                                color="inherit"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <IconButton size="large" onClick={openAuthDialog}>
+                                <PersonIcon />
+                            </IconButton>
+                            <DialogSearchIcon />
+                            <Cart />
+                            <Auth open={authOpened} onClose={closeAuthDialog} fullScreen={true} />
+                        </Toolbar>
+                    </DialogAppBar>
+                </Dialog>
             </>
         ),
-        [mobileMenuOpened, changeMobileMenuFlag],
+        [mobileMenuOpened, changeMobileMenuFlag, openAuthDialog, closeAuthDialog, authOpened],
     )
 
     const desktopHtml = useMemo(
