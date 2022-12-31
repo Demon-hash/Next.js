@@ -3,7 +3,8 @@ import {
     AppBar,
     AppBarProps,
     Box,
-    Button, Dialog,
+    Button,
+    Dialog,
     IconButton,
     Toolbar,
     Typography,
@@ -18,9 +19,9 @@ import { useWindowSize } from "@react-hook/window-size"
 
 import MenuIcon from "@mui/icons-material/Menu"
 
-import {DialogAppBar, DialogSearchIcon, DialogTransition} from "../Shared";
-import CloseIcon from "@mui/icons-material/Close";
-import PersonIcon from "@mui/icons-material/Person";
+import { DialogAppBar, DialogSearchIcon, DialogTransition } from "../Shared"
+import CloseIcon from "@mui/icons-material/Close"
+import PersonIcon from "@mui/icons-material/Person"
 
 const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: theme.palette.appNavBar.main,
@@ -78,13 +79,23 @@ const Navbar: React.FC = () => {
                             </IconButton>
                             <DialogSearchIcon />
                             <Cart />
-                            <Auth open={authOpened} onClose={closeAuthDialog} fullScreen={true} />
+                            <Auth
+                                open={authOpened}
+                                onClose={closeAuthDialog}
+                                fullScreen={true}
+                            />
                         </Toolbar>
                     </DialogAppBar>
                 </Dialog>
             </>
         ),
-        [mobileMenuOpened, changeMobileMenuFlag, openAuthDialog, closeAuthDialog, authOpened],
+        [
+            mobileMenuOpened,
+            changeMobileMenuFlag,
+            openAuthDialog,
+            closeAuthDialog,
+            authOpened,
+        ],
     )
 
     const desktopHtml = useMemo(
