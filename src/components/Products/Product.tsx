@@ -1,13 +1,13 @@
 import React from "react"
-import {styled} from "@mui/material/styles"
-import {Paper, Skeleton, Stack, Typography, useTheme} from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { Paper, Skeleton, Stack, Typography, useTheme } from "@mui/material"
 
-import {IProduct} from "../../types/product"
+import { IProduct } from "../../types/product"
 import Colors from "./Colors"
 import Price from "./Price"
 import Link from "next/link"
-import {StaticRoutes} from "../../static-routes"
-import {Image, ImageContainer} from "../Shared";
+import { StaticRoutes } from "../../static-routes"
+import { Image, ImageContainer } from "../Shared"
 
 type Props = IProduct & {
     gap: number
@@ -39,7 +39,7 @@ const Product: React.FC<Props> = ({
         },
         [theme.breakpoints.up("lg")]: {
             width: width,
-            maxWidth: width
+            maxWidth: width,
         },
         marginTop: `${gap * 20}px`,
         ...theme.typography.body2,
@@ -53,7 +53,7 @@ const Product: React.FC<Props> = ({
         <Item>
             <ImageContainer role="img">
                 <Link href={`${StaticRoutes.Product.template}/${id}`}>
-                    <Image src={img} alt="*" loading="lazy"/>
+                    <Image src={img} alt="*" loading="lazy" />
                 </Link>
             </ImageContainer>
             <Colors colors={colors} />

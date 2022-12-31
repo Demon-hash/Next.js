@@ -30,7 +30,13 @@ export namespace StaticRoutes {
     export enum Product {
         template = "/product",
     }
+    export enum Products {
+        all = "/products",
+    }
     export enum Category {
         template = "/category",
+    }
+    export enum Search {
+        template = "/search",
     }
 }

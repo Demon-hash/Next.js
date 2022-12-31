@@ -1,7 +1,7 @@
 import React from "react"
 import { Paper } from "@mui/material"
 import { ICarouselItem } from "../../types/carousel-item"
-import { Image } from "../Shared";
+import { Image } from "../Shared"
 
 type Type = ICarouselItem & {
     width: number

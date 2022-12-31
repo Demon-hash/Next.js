@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react"
 import {
     FormControl,
     IconButton,
@@ -16,6 +16,7 @@ import { useRouter } from "next/router"
 import { useSearchCategories } from "../../routes"
 import { ICategories } from "../../types/categories"
 import { LanguageSwitcher } from "../index"
+import { StaticRoutes } from "../../static-routes"
 
 const Container = styled(TextField)<TextFieldProps>(({ theme }) => ({
     [theme.breakpoints.down("sm")]: {
@@ -23,7 +24,7 @@ const Container = styled(TextField)<TextFieldProps>(({ theme }) => ({
     },
     [theme.breakpoints.up("md")]: {
         minWidth: "50%",
-        maxWidth: "50%"
+        maxWidth: "50%",
     },
     ".MuiOutlinedInput-root": {
         "& > fieldset": {
@@ -49,10 +50,11 @@ const SearchIcon = styled(Search)(({ theme }) => ({
 }))
 
 const SearchBar: React.FC = () => {
-    const { locale } = useRouter()
+    const { locale, push } = useRouter()
     const [categories, setCategories] = useState<string[] | undefined>(
         undefined,
     )
+
     const [category, setCategory] = useState<string | null>(null)
 
     const { data } = useSearchCategories<ICategories>({ locale: locale ?? "" })
@@ -67,18 +69,30 @@ const SearchBar: React.FC = () => {
         setCategory(categories[0])
     }, [categories])
 
-    const search = () => {
-        return
-    }
+    const [query, setQuery] = useState<string>("")
 
-    const changeSearchCategory = (event: unknown) => {
+    const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) =>
+        setQuery(event.target.value)
+
+    const changeSearchCategory = (event: unknown) =>
         setCategory((event as SelectChangeEvent).target.value)
+
+    const search = () => {
+        if (!query.length) return
+        void push(
+            `${StaticRoutes.Search.template}/?q=${encodeURIComponent(
+                `${query}`,
+            )}`,
+        )
+        return
     }
 
     return categories?.length ? (
         <Container
             type="text"
             variant="outlined"
+            value={query}
+            onChange={handleQueryChange}
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">

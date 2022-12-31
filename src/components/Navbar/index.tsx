@@ -1,9 +1,10 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import {
     AppBar,
     AppBarProps,
     Box,
-    Button, Drawer,
+    Button,
+    Drawer,
     IconButton,
     Toolbar,
     Typography,
@@ -17,7 +18,8 @@ import AppConfig from "../../../app.config"
 import { useWindowSize } from "@react-hook/window-size"
 
 import MenuIcon from "@mui/icons-material/Menu"
-import MobileMenu from "./Mobile-Menu";
+
+import MobileMenu from "./Mobile-Menu"
 
 const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
     background: theme.palette.appNavBar.main,
@@ -35,28 +37,28 @@ const Navbar: React.FC = () => {
     const [width] = useWindowSize()
 
     const [authOpened, setAuthOpened] = useState<boolean>(false)
+    const openAuthDialog = useCallback(() => setAuthOpened(true), [])
+    const closeAuthDialog = useCallback(() => setAuthOpened(false), [])
 
-    const openAuthDialog = () => setAuthOpened(true)
-    const closeAuthDialog = () => setAuthOpened(false)
+    const [mobileMenuOpened, setMobileMenuOpened] = useState(false)
 
-    const [mobileMenuOpened, setMobileMenuOpened] = useState(false);
-
-    const changeMobileMenuFlag = useCallback((flag: boolean) => setMobileMenuOpened(flag), []);
+    const changeMobileMenuFlag = useCallback(
+        (flag: boolean) => setMobileMenuOpened(flag),
+        [],
+    )
 
     // Hydration error fix
     const mobileHtml = useMemo(
         () => (
             <>
-                <Box sx={{ flexGrow: 1 }} />
-                <IconButton size="large" onClick={() => changeMobileMenuFlag(true)}>
+                <IconButton
+                    size="large"
+                    onClick={() => changeMobileMenuFlag(true)}
+                >
                     <MenuIcon />
                 </IconButton>
-                <Drawer
-                    anchor="right"
-                    open={mobileMenuOpened}
-                    onClose={() => changeMobileMenuFlag(false)}
-                >
-                   <MobileMenu/>
+                <Drawer anchor="bottom" open={mobileMenuOpened}>
+                    <MobileMenu onClose={() => changeMobileMenuFlag(false)} />
                 </Drawer>
             </>
         ),
@@ -66,6 +68,7 @@ const Navbar: React.FC = () => {
     const desktopHtml = useMemo(
         () => (
             <>
+                <SearchBar />
                 <Box sx={{ flexGrow: 1 }} />
                 <Cart />
                 <Button variant="outlined" onClick={openAuthDialog}>
@@ -74,7 +77,7 @@ const Navbar: React.FC = () => {
                 <Auth open={authOpened} onClose={closeAuthDialog} />
             </>
         ),
-        [authOpened, t],
+        [authOpened, t, openAuthDialog, closeAuthDialog],
     )
 
     const [content, setContent] = useState(desktopHtml)
@@ -97,7 +100,6 @@ const Navbar: React.FC = () => {
                     >
                         {Company}
                     </Typography>
-                    <SearchBar />
                     {content}
                 </Toolbar>
             </MyAppBar>

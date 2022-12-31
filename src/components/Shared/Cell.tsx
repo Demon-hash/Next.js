@@ -5,4 +5,4 @@ const Cell = styled(TableCell)(() => ({
     border: 0,
 }))
 
-export default Cell;
+export default Cell

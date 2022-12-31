@@ -1,8 +1,6 @@
-import React, { forwardRef, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ShoppingCart } from "@mui/icons-material"
 import {
-    AppBar,
-    AppBarProps,
     Badge,
     Button,
     Dialog,
@@ -11,34 +9,18 @@ import {
     List,
     ListItem,
     ListItemText,
-    Slide,
     Toolbar,
     Typography,
 } from "@mui/material"
-import { TransitionProps } from "@mui/material/transitions"
 import CloseIcon from "@mui/icons-material/Close"
 import { styled } from "@mui/material/styles"
 import { useTranslation } from "next-i18next"
 import { useRouter } from "next/router"
-
-const Transition = forwardRef(function Transition(
-    props: TransitionProps & {
-        children: React.ReactElement
-    },
-    ref: React.Ref<unknown>,
-) {
-    {/* prettier-ignore */}
-    return <Slide direction="up" ref={ref} {...props} />
-})
+import { DialogAppBar, DialogTransition } from "../Shared"
 
 const ShoppingCartIcon = styled(IconButton)(({ theme }) => ({
     color: theme.palette?.appSearchBar?.dark,
     margin: theme.spacing(0, 2),
-}))
-
-const MyAppBar = styled(AppBar)<AppBarProps>(({ theme }) => ({
-    background: theme.palette?.appNavBar?.main,
-    color: theme.palette?.appNavBar?.contrastText,
 }))
 
 const Cart: React.FC = () => {
@@ -71,9 +53,9 @@ const Cart: React.FC = () => {
                 fullScreen
                 open={opened}
                 onClose={onClose}
-                TransitionComponent={Transition}
+                TransitionComponent={DialogTransition}
             >
-                <MyAppBar sx={{ position: "relative" }}>
+                <DialogAppBar sx={{ position: "relative" }}>
                     <Toolbar>
                         <IconButton
                             edge="start"
@@ -93,7 +75,7 @@ const Cart: React.FC = () => {
                             {t("checkout")}
                         </Button>
                     </Toolbar>
-                </MyAppBar>
+                </DialogAppBar>
                 <List>
                     <ListItem>
                         <ListItemText

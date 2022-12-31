@@ -9,9 +9,9 @@ import {
     FormControl,
     Typography,
     DialogContentText,
-    IconButton,
     Box,
     TextFieldProps,
+    IconButton,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -19,11 +19,7 @@ import FacebookIcon from "@mui/icons-material/Facebook"
 import TwitterIcon from "@mui/icons-material/Twitter"
 import GoogleIcon from "@mui/icons-material/Google"
 import { useTranslation } from "next-i18next"
-
-type Props = {
-    open: boolean
-    onClose: () => void
-}
+import CloseIcon from "@mui/icons-material/Close";
 
 const Container = styled(Dialog)(() => () => ({}))
 
@@ -31,7 +27,7 @@ const Title = styled(DialogTitle)(({ theme }) => ({
     ...theme.typography.h3,
     textAlign: "center",
     background: theme.palette?.appNavBar?.main,
-    color: theme.palette?.appNavBar?.light,
+    color: theme.palette?.appNavBar?.contrastText,
 }))
 
 const Content = styled(DialogContent)(({ theme }) => ({
@@ -67,11 +63,29 @@ const TextInput = styled(TextField)<TextFieldProps>(({ theme }) => ({
     },
 }))
 
-const Auth: React.FC<Props> = ({ open, onClose }) => {
+const CloseFullscreenIcon = styled(CloseIcon)(({ theme }) => ({
+    color: theme.palette?.appNavBar?.contrastText,
+    position: "absolute",
+    top: 15,
+    right: 15
+}))
+
+type Props = {
+    open: boolean
+    onClose: () => void
+    fullScreen?: boolean
+}
+
+const Auth: React.FC<Props> = ({ open, onClose, fullScreen }) => {
     const { t } = useTranslation("auth")
 
     return (
-        <Container open={open} onClose={onClose}>
+        <Container open={open} onClose={onClose} fullScreen={fullScreen}>
+            {fullScreen && (
+                <IconButton onClick={onClose}>
+                    <CloseFullscreenIcon/>
+                </IconButton>
+            )}
             <Title>{t("title")}</Title>
             <Content>
                 <Text>{t("desc")}</Text>
