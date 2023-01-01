@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import { ICategoriesTable } from "../../types/categories"
 import {
     Accordion,
@@ -8,6 +8,7 @@ import {
 } from "@mui/material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { useRouter } from "next/router"
+import getTableData, { CategoryFactory } from "../../utils/Category"
 
 type Props = {
     data: ICategoriesTable | undefined
@@ -16,76 +17,52 @@ type Props = {
 const MobileCategory: React.FC<Props> = ({ data }) => {
     const { locale } = useRouter()
 
-    // const getCategoryTitle = useCallback(
-    //     (entity: Parameters<typeof getTitleWithFallback>[0]) =>
-    //         getTitleWithFallback(entity, locale),
-    //     [locale],
-    // )
-    //
-    // const unpackCategories = useCallback(
-    //     (table: Parameters<typeof unpack>[0]) => unpack(table),
-    //     [],
-    // )
+    const createAccordion = useCallback<CategoryFactory>(
+        (entity, { getTitle }) => {
+            if (typeof entity === "undefined") return <></>
+            return (
+                <Accordion key={entity.id}>
+                    <AccordionSummary
+                        expandIcon={
+                            entity?.children?.length ? <ExpandMoreIcon /> : null
+                        }
+                    >
+                        <Typography>{getTitle(entity, locale)}</Typography>
+                    </AccordionSummary>
+                </Accordion>
+            )
+        },
+        [locale],
+    )
+    const { title, columns } = useMemo(
+        () => getTableData(data, locale, createAccordion),
+        [data, locale, createAccordion],
+    )
 
-    // useEffect(() => {}, [])
-    //
-    // const createHeader = useCallback(
-    //     (entity: ICategoriesTable | undefined) => {
-    //         if (typeof entity === "undefined") return null
-    //         return (
-    //             <React.Fragment key={entity.id}>
-    //                 {entity?.children?.length ? (
-    //                     <Accordion>
-    //                         <AccordionSummary
-    //                             expandIcon={
-    //                                 entity?.children?.length ? (
-    //                                     <ExpandMoreIcon />
-    //                                 ) : null
-    //                             }
-    //                         >
-    //                             <Typography>
-    //                                 {getCategoryTitle(entity)}
-    //                             </Typography>
-    //                         </AccordionSummary>
-    //                         <AccordionDetails>
-    //                             {unpackCategories(entity?.children).map(
-    //                                 createHeader,
-    //                             )}
-    //                         </AccordionDetails>
-    //                     </Accordion>
-    //                 ) : (
-    //                     <Accordion>
-    //                         <AccordionSummary expandIcon={null}>
-    //                             <Typography>
-    //                                 {getCategoryTitle(entity)}
-    //                             </Typography>
-    //                         </AccordionSummary>
-    //                     </Accordion>
-    //                 )}
-    //             </React.Fragment>
-    //         )
-    //     },
-    //     [getCategoryTitle],
-    // )
-    //
-    // const getHeaders = useCallback(
-    //     (table: ICategoriesTable | undefined) =>
-    //         table?.children?.map(v => createHeader(v)) ?? [],
-    //     [createHeader],
-    // )
+    useEffect(() => {
+        console.log(columns)
+    }, [columns])
 
-    // return data ? (
-    //     <Accordion>
-    //         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-    //             <Typography>{getCategoryTitle(data)}</Typography>
-    //         </AccordionSummary>
-    //         <AccordionDetails>{getHeaders(data)}</AccordionDetails>
-    //     </Accordion>
-    // ) : (
-    //     <></>
-    // )
-
-    return <></>
+    return data ? (
+        <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>{title}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                {columns.map((column, i) => (
+                    <React.Fragment key={i}>
+                        {column.map((row, i) => (
+                            <React.Fragment key={i}>
+                                <>{row}</>
+                            </React.Fragment>
+                        ))}
+                    </React.Fragment>
+                ))}
+            </AccordionDetails>
+        </Accordion>
+    ) : (
+        <></>
+    )
 }
 
 export default MobileCategory
