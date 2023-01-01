@@ -1,4 +1,4 @@
-import { createRoute } from "./utils/router"
+import { createRoute } from "./utils/Router/router"
 
 export const API_ROUTE = "/api"
 

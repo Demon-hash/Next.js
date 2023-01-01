@@ -20,7 +20,7 @@ import { DialogAppBar, DialogTransition } from "../Shared"
 
 const ShoppingCartIcon = styled(IconButton)(({ theme }) => ({
     color: theme.palette?.appSearchBar?.dark,
-    margin: theme.spacing(0, 2),
+    // margin: theme.spacing(0, 2),
 }))
 
 const Cart: React.FC = () => {

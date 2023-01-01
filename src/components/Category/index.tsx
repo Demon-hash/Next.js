@@ -18,11 +18,7 @@ import {
     Typography,
     useTheme,
 } from "@mui/material"
-import {
-    ICategoriesTable,
-    ICategoryTitleWithLanguages,
-} from "../../types/categories"
-import AppConfig from "../../../app.config"
+import { ICategoriesTable } from "../../types/categories"
 import { StaticRoutes } from "../../static-routes"
 import PopupState, { bindHover, bindPopover } from "material-ui-popup-state"
 import HoverPopover from "material-ui-popup-state/HoverPopover"
@@ -30,6 +26,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp"
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
 import { useWindowSize } from "@react-hook/window-size"
 import { Cell } from "../Shared"
+import getTableData, { CategoryFactory } from "../../utils/Category"
 
 const MyTableContainer = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(2),
@@ -49,31 +46,8 @@ const Category: React.FC<Props> = ({ id, data }) => {
 
     const laptopCategoriesPerTable = 6
 
-    const getTitleWithFallback = useCallback(
-        (entity: ICategoriesTable) => {
-            if (!entity?.title) return "undefined"
-            return (
-                entity?.title?.[
-                    (typeof locale === "string"
-                        ? locale
-                        : AppConfig.defaultAppLanguage) as keyof ICategoryTitleWithLanguages
-                ] ?? "undefined"
-            )
-        },
-        [locale],
-    )
-
-    const getTableHeight = useCallback(
-        (body: [ICategoriesTable[]]) =>
-            Object.values(body).reduce(
-                (p, c, i, a) => (a[p].length > c.length ? p : i),
-                0,
-            ),
-        [],
-    )
-
-    const createCellWithLink = useCallback(
-        (entity: ICategoriesTable | undefined) => {
+    const createCellWithLink = useCallback<CategoryFactory>(
+        (entity, { getTitle }) => {
             if (typeof entity === "undefined") return <Cell></Cell>
             return (
                 <Cell key={entity.id}>
@@ -82,97 +56,18 @@ const Category: React.FC<Props> = ({ id, data }) => {
                             StaticRoutes.Category.template + "/" + entity.id
                         }`}
                     >
-                        {getTitleWithFallback(entity)}
+                        {getTitle(entity, locale)}
                     </Link>
                 </Cell>
             )
         },
-        [getTitleWithFallback],
+        [locale],
     )
 
-    const getTableHeaders = useCallback(
-        (table: ICategoriesTable | undefined) =>
-            table?.children?.map(v => createCellWithLink(v)) ?? [],
-        [createCellWithLink],
+    const { title, headers, columns } = useMemo(
+        () => getTableData(data, locale, createCellWithLink),
+        [data, locale, createCellWithLink],
     )
-
-    const unpack = useCallback(
-        (
-            table: ICategoriesTable | ICategoriesTable[] | undefined,
-        ): ICategoriesTable[] => {
-            if (table == undefined) return []
-            const res: ICategoriesTable[] = []
-
-            if (Array.isArray(table)) {
-                table.forEach(v => {
-                    res.push(v, ...unpack(v.children))
-                })
-            } else {
-                return [table]
-            }
-
-            return res
-        },
-        [],
-    )
-
-    const createTableCells = useCallback(
-        (
-            headers: ReactElement[],
-            table: [ICategoriesTable[]],
-            height: number,
-        ): ReactElement[] => {
-            const cells = []
-            for (let index = 0; index < table[height].length; index++) {
-                for (let j = 0; j < headers.length; j++) {
-                    cells.push(createCellWithLink(table?.[j]?.[index]))
-                }
-            }
-            return cells
-        },
-        [createCellWithLink],
-    )
-
-    const partition = useCallback(
-        (array: ReactElement[], n: number): ReactElement[][] => {
-            return array.length
-                ? [array.splice(0, n)].concat(partition(array, n))
-                : []
-        },
-        [],
-    )
-
-    const createTableData = useCallback(
-        (table: ICategoriesTable) => {
-            const headers = getTableHeaders(table)
-
-            const body: [ICategoriesTable[]] =
-                table?.children?.reduce(
-                    (acc, _, inx, arr) => ({
-                        ...acc,
-                        [inx]: unpack(arr[inx]?.children),
-                    }),
-                    {} as [ICategoriesTable[]],
-                ) ?? ({} as [ICategoriesTable[]])
-
-            const columns = partition(
-                createTableCells(headers, body, getTableHeight(body)),
-                headers.length,
-            )
-
-            return { headers, columns }
-        },
-        [createTableCells, getTableHeaders, getTableHeight, partition, unpack],
-    )
-
-    const [title, headers, columns] = useMemo(() => {
-        if (data == undefined) return [null, [], []]
-
-        const title = getTitleWithFallback(data)
-        const { headers, columns } = createTableData(data)
-
-        return [title, headers, columns]
-    }, [data, createTableData, getTitleWithFallback])
 
     const desktopHtml = useMemo(
         () => (
@@ -231,7 +126,7 @@ const Category: React.FC<Props> = ({ id, data }) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {columns.map((column, i) => (
+                                        {columns?.map((column, i) => (
                                             <TableRow key={i}>
                                                 {column
                                                     .slice(

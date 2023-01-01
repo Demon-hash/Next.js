@@ -1,5 +1,5 @@
 import useSWR, { SWRResponse, Fetcher } from "swr"
-import { API_ROUTE } from "../routes"
+import { API_ROUTE } from "../../routes"
 
 type Params<T, V> = T & Record<string, V>
 
