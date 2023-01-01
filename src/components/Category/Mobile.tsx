@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react"
+import React, { useCallback, useMemo } from "react"
 import { ICategoriesTable } from "../../types/categories"
 import {
     Accordion,
@@ -34,14 +34,11 @@ const MobileCategory: React.FC<Props> = ({ data }) => {
         },
         [locale],
     )
+
     const { title, columns } = useMemo(
         () => getTableData(data, locale, createAccordion),
         [data, locale, createAccordion],
     )
-
-    useEffect(() => {
-        console.log(columns)
-    }, [columns])
 
     return data ? (
         <Accordion>
