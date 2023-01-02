@@ -15,19 +15,25 @@ type ColumnsArgs = Parameters<typeof toColumns>
 export type CategoryFactory = (
     entity: ICategoriesTable | undefined,
     opts: typeof FactoryFunctions,
-) => ReactElement
+) => ReactElement | unknown
 
 const FactoryFunctions = {
     getTitle: getTitleWithFallback,
-} as const
+    index: 0,
+    isHeader: false,
+}
 
 function getHeaders(
     table: ICategoriesTable | undefined,
     factory: CategoryFactory,
-): ReactElement[] {
+): ReactElement[] | unknown[] {
     return (
-        table?.children?.map(v =>
-            factory(v, { getTitle: getTitleWithFallback }),
+        table?.children?.map((v, index) =>
+            factory(v, {
+                getTitle: getTitleWithFallback,
+                isHeader: true,
+                index,
+            }),
         ) ?? []
     )
 }
@@ -42,7 +48,7 @@ function getHeight(body: [ICategoriesTable[]]): number {
 function toColumns(
     array: ReturnType<typeof createCells>,
     n: number,
-): ReactElement[][] {
+): ReactElement[][] | unknown[][] {
     return array.length ? [array.splice(0, n)].concat(toColumns(array, n)) : []
 }
 
@@ -62,17 +68,19 @@ function unpack(
 }
 
 function createCells(
-    headers: ReactElement[],
+    headers: ReactElement[] | unknown[],
     table: [ICategoriesTable[]],
     height: number,
     factory: CategoryFactory,
-): ReactElement[] {
+): ReactElement[] | unknown[] {
     const cells = []
     for (let index = 0; index < table[height].length; index++) {
         for (let j = 0; j < headers.length; j++) {
             cells.push(
                 factory(table?.[j]?.[index], {
                     getTitle: getTitleWithFallback,
+                    isHeader: false,
+                    index: j,
                 }),
             )
         }
